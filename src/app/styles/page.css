@@ -1,0 +1,21 @@
+
+.arrow-container {
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.arrow-container:hover {
+  transform: scale(1.2); /* Slight zoom effect on hover */
+}
+.custom-h1 {
+  color: #333;
+}
+
+.current-page-content {
+  text-align: center;
+}
+
+.bg-gray-100 {
+  background-color: #f5f5f5; /* Light gray background for the next section */
+}

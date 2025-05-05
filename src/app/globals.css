@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.custom-h1 {
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-h1::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px; /* Thickness of the underline */
+  background-color: #3498db; /* Color of the underline */
+  transition: width 0.3s ease-in-out; /* Transition for the effect */
+}
+
+.custom-h1:hover::before {
+  width: 100%; /* Expand the underline on hover */
+}
+
+.arrow-container {
+  text-align: center; /* Center align the arrow container */
+  margin-top: 10vh; /* Set the margin to a fixed value relative to the viewport height */
+  position: absolute; /* Position the arrow container at the bottom */
+  bottom: 80px; /* Adjust the distance from the bottom of the screen */
+  left: 50%; /* Center the container horizontally */
+  transform: translateX(-50%); /* To center it perfectly */}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px; /* Set the size of the circle */
+  height: 80px; /* Set the size of the circle */
+  border-radius: 50%; /* Make the div circular */
+  background-color: #3498db; 
+
+  transform: rotate(90deg); /* Rotate the ">>>" symbol to point downwards */
+  
+}
+
+
+/* Full container to hold pages */
+.full-page-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Each page takes full screen */
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: translateY(100%); /* Start out of view */
+  transition: transform 0.5s ease-in-out; /* Smooth transition */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Active page is in view */
+.page.active {
+  transform: translateY(0); /* Bring into view */
+}
+
+/* First page starts visible */
+.page-1.active {
+  background-color: #3498db; /* Optional color */
+  color: white;
+}
+
+.page-2.active {
+  background-color: #2ecc71; /* Optional color */
+  color: white;
+}
+
+/* Arrow styles */
+.arrow-container {
+  margin-top: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 2rem;
+  color: white;
+  animation: bounce 1s infinite; /* Optional bounce effect */
+}
+
+/* Optional: Bounce animation for arrow */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
