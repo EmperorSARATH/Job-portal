@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { clearUser } from "../store/userSlice";
 import { AppDispatch } from "../store/store";
 import Cookies from 'js-cookie';
+import Image from "next/image";
 interface SidebarProps {
   name?: string,
   type?: string
@@ -40,10 +41,12 @@ export default function Sidebar({ name, type }: SidebarProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-4 right-4 w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
       >
-        <img
+        <Image
           src="/profile.jpg"
           alt="Profile"
           className="w-10 h-10 rounded-full"
+          width={2}
+          height={2}
         />
       </button>
 
