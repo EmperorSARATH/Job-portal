@@ -61,7 +61,25 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className=" relative flex items-center justify-center min-h-screen bg-gray-100">
+          {/* Back Button */}
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+        <Link
+          href="/"
+          className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+        >
+          ← Back
+        </Link>
+        {/* OR use button and router.push if programmatic */}
+        {/* <button
+          onClick={() => router.push('/your-target-page')}
+          className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+        >
+          ← Back
+        </button> */}
+      </div>
+
+
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login as Employer</h2>
         <form className="space-y-4 " onSubmit={handleSubmit}>
