@@ -8,21 +8,23 @@ import SearchBar from "./searchBar";
 import JobsList from './JobsList';
 import { useEffect, useState } from "react";
 import JobDetails from "./JobDetails";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import FilterDropdown from "./FilterDropdown";
 
 export default function Dashboard() {
   const user = useSelector((state: RootState) => state.user.user);
   const router = useRouter();
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
-   useEffect(() => {
+  useEffect(() => {
     // Simulate async check or wait for Redux rehydration
     if (user === undefined) {
       // Still loading (e.g., initial Redux state)
       return;
     }
 
-    
+
 
     if (!user && !localStorage.getItem("accessToken")) {
       // Auth check done, user not found, redirect
@@ -45,8 +47,14 @@ export default function Dashboard() {
 
     <div className="mt-4 space-y-4">
       {/* First Row: Search Bar & Sidebar */}
-      <div className="flex items-center justify-between space-x-4">
-        <SearchBar />
+      <div className="flex items-center justify-between w-full">
+        {/* Left group: Search + Filter */}
+        <div className="flex items-center space-x-4">
+          <SearchBar />
+          <FilterDropdown onFilterChange={setSelectedFilter} />
+        </div>
+
+        {/* Right: Sidebar */}
         <Sidebar name={user?.username} />
       </div>
 
@@ -54,11 +62,11 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 gap-4">
         <div className="pr-4  border-r-2 border-red-500">
           {/* Component left*/}
-         <JobsList/> 
+          <JobsList filter = {selectedFilter} />
         </div>
         <div className="pl-4">
           {/* Component right*/}
-          <JobDetails/>
+          <JobDetails />
         </div>
       </div>
     </div>

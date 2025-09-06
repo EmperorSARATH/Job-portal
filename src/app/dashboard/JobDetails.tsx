@@ -9,6 +9,11 @@ export default function JobDetails() {
   if (!selectedJob) {
     return <p>No job selected.</p>;
   }
+  
+
+   
+
+  
 
 
   return (

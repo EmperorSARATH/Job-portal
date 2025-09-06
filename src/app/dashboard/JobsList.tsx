@@ -21,16 +21,26 @@ export interface JobDTO {
   city: string;
 
 }
+interface JobsListProps {
+  filter: string | null;
+}
 
+const JobsList = ({filter}:JobsListProps) => {
 
-const JobsList = () => {
-
-  const [job, setJobs] = useState<JobDTO[]>([]); useEffect(() => {
+  const [job, setJobs] = useState<JobDTO[]>([]); 
+  useEffect(() => {
 
 
     const fetchJobs = async () => {
       try {
-        const response = await apiClient('http://localhost:8080/list/jobs');
+        let response = null;
+        if(filter!=null){
+        response = await apiClient(`http://localhost:8080/list/jobs?filter=${encodeURIComponent(filter)}`);
+
+        }else{
+        response = await apiClient('http://localhost:8080/list/jobs');
+
+        }
         const result = await response.json(); // parse JSON
         setJobs(result.content); // <-- set only the `content` array
       } catch (error) {
@@ -39,12 +49,13 @@ const JobsList = () => {
     };
 
     fetchJobs();
-  }, []);
+  }, [filter]);
 
 
    const dispatch = useDispatch();
 
   const handleCardClick = (selectedJob: JobDTO) => {
+    console.log("anamika is learning !!!!!",selectedJob);
       dispatch(setSelectedJob(selectedJob));
   };
 

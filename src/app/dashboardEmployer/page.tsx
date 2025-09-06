@@ -106,7 +106,9 @@ useEffect(() => {
       {/* First Row: Search Bar & Sidebar */}
       <div className="flex items-center justify-between space-x-4">
         <SearchBar />
+        <div className="relative z-50">
         <Sidebar name={user.username} type="/EmployerLogin" />
+        </div>
       </div>
 
       {/* Grid of Dynamic Cards */}
@@ -127,6 +129,16 @@ useEffect(() => {
             >
               ✖
             </button>
+
+            <button
+              //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
+              className="absolute bottom-2 right-2 text-white bg-orange-500 rounded-full p-1 hover:bg-orange-600"
+            onClick={() => setShowForm(true)}
+             
+            >
+              ^
+            </button>
+
             <h3 className="text-lg font-bold">{item.title}</h3>
             <p className="text-sm">{item.description}</p>
           </div>

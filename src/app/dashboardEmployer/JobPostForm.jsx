@@ -10,7 +10,7 @@ const JobPostForm = ({ onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({ title: "", description: "" }); // Reset form after submit
+    setFormData({ title: "", description: "", skills: [] }); // Reset form after submit
   };
 
 
