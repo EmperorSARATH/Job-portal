@@ -19,6 +19,7 @@ interface CardData {
   objectId: string;
   title: string;
   description: string;
+  skills: []
 }
 
 interface PaginatedResponse {
@@ -33,13 +34,16 @@ export default function Dashboard() {
   const user = useSelector((state: RootState) => state.user.user);
   const [data, setData] = useState<CardData[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [objectId, setObjectId] = useState("");
+
+  const [formMode, setFormMode] = useState("create");
 
   const fetchData = async () => {
     try {
       const response = await apiClient("http://localhost:8080/list/jobPostCard"); // Replace with actual API URL
       const result: PaginatedResponse = await response.json();
       setData(result.content);
-      console.log(result.content,"values")
+      console.log(result.content, "values")
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -51,47 +55,68 @@ export default function Dashboard() {
   }, []);
 
 
-
-  const handleFormSubmit = async (formData: CardData) => {
+  const handleFormSubmit = async (formData: CardData, mode: string, objectId: string) => {
     try {
-      const response = await apiClient("http://localhost:8080/create/jobPostCard", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      if (mode === "create") {
 
-      if (!response.ok) throw new Error("Failed to create job post card");
+        const response = await apiClient("http://localhost:8080/create/jobPostCard", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) throw new Error("Failed to create job post card");
 
-      const newData = await response.json();
-      setData((prev) => [...prev, newData]); // Update UI with the new card
-      setShowForm(false); // Hide form after submission
-      fetchData();
+        const newData = await response.json();
+        setData((prev) => [...prev, newData]); // Update UI with the new card
+        setShowForm(false); // Hide form after submission
+        fetchData();
+
+      } else if (mode === "edit") {
+        const req = {
+          description: formData.description,
+          title: formData.title,
+          objectId: objectId,
+          skills: formData.skills
+        };
+
+        const response = await apiClient("http://localhost:8080/edit/jobPostCard", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(req),
+        });
+        if (!response.ok) throw new Error("Failed to create job post card");
+
+        const newData = await response.json();
+        setData((prev) => [...prev, newData]); // Update UI with the new card
+        setShowForm(false); // Hide form after submission
+        fetchData();
+      }
     } catch (error) {
       console.error("Error creating job post:", error);
     }
   };
 
-const isDeleted = async (id: string) => {
-  try {
-    const response = await apiClient(`http://localhost:8080/delete/jobPostCard/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" }
-    });
+  const isDeleted = async (id: string) => {
+    try {
+      const response = await apiClient(`http://localhost:8080/delete/jobPostCard/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
 
-    if (!response.ok) throw new Error("Failed to delete JobPostcard");
-    fetchData(); 
+      if (!response.ok) throw new Error("Failed to delete JobPostcard");
+      fetchData();
 
-    
-  } catch (error) {
-    console.error("Error deleting", error);
-  }
-};
 
-useEffect(() => {
+    } catch (error) {
+      console.error("Error deleting", error);
+    }
+  };
+
+  useEffect(() => {
     if (!user) {
       // Wait for 2 seconds and then redirect to the login page
       setTimeout(() => {
-        redirect("/login");
+        redirect("/EmployerLogin");
       }, 100);
     }
   }, [user]); // This effect will run when `user` changes.
@@ -107,7 +132,7 @@ useEffect(() => {
       <div className="flex items-center justify-between space-x-4">
         <SearchBar />
         <div className="relative z-50">
-        <Sidebar name={user.username} type="/EmployerLogin" />
+          <Sidebar name={user.username} type="/EmployerLogin" />
         </div>
       </div>
 
@@ -122,10 +147,11 @@ useEffect(() => {
             <button
               //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
               className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-1 hover:bg-red-600"
-              onClick={()=>{
-                  isDeleted(item.objectId)}
+              onClick={() => {
+                isDeleted(item.objectId)
               }
-             
+              }
+
             >
               ✖
             </button>
@@ -133,8 +159,12 @@ useEffect(() => {
             <button
               //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
               className="absolute bottom-2 right-2 text-white bg-orange-500 rounded-full p-1 hover:bg-orange-600"
-            onClick={() => setShowForm(true)}
-             
+              onClick={() => {
+                setFormMode("edit");
+                setShowForm(true);
+                setObjectId(item.objectId);
+              }}
+
             >
               ^
             </button>
@@ -153,7 +183,7 @@ useEffect(() => {
         </button>
       </div>
       {/* Render Form when 'showForm' is true */}
-      {showForm && <JobPostForm onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
+      {showForm && <JobPostForm mode={formMode} objectId={objectId} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
 
     </div>
   );

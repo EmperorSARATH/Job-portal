@@ -20,6 +20,7 @@ export default function Sidebar({ name, type }: SidebarProps) {
     dispatch(clearUser());
     localStorage.clear();
     Cookies.remove('JWT');
+    console.log("path ======",path);
     router.replace(path ?? "/login");
   };
 

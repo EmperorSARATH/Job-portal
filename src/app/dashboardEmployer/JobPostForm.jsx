@@ -1,30 +1,56 @@
-import { useState } from "react";
+"use client";
 
-const JobPostForm = ({ onClose, onSubmit }) => {
+import { apiClient } from "@/lib/apiClient";
+import { useState, useEffect } from "react";
+
+const JobPostForm = ({ mode, objectId, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({ title: "", description: "", skills: [] });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const [suggestions, setSuggestions] = useState([]);
+  const [skillInput, setSkillInput] = useState('');
+
+  useEffect(() => {
+    if (!skillInput.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    // Debounce: wait 300ms after user stops typing
+    const handler = setTimeout(async () => {
+      try {
+        const res = await apiClient(
+          `http://localhost:8080/search?query=${skillInput}`
+        );
+        const data = await res.json();
+        setSuggestions(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }, 300);
+
+    // Cleanup if user types again within 300ms
+    return () => clearTimeout(handler);
+  }, [skillInput]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit(formData, mode, objectId);
     setFormData({ title: "", description: "", skills: [] }); // Reset form after submit
   };
 
 
-  const [skillInput, setSkillInput] = useState('');
-
-
-  const handleAddSkill = () => {
-    if (skillInput.trim() && !formData.skills.includes(skillInput.trim())) {
-      setFormData(prev => ({
+  const handleAddSkill = (skill) => {
+    if (skill && !formData.skills.includes(skill)) {
+      setFormData((prev) => ({
         ...prev,
-        skills: [...prev.skills, skillInput.trim()]
+        skills: [...prev.skills, skill],
       }));
     }
-    setSkillInput('');
+    setSkillInput(''); // clear the input after selection
   };
 
   const handleRemoveSkill = (skillToRemove) => {
@@ -36,7 +62,7 @@ const JobPostForm = ({ onClose, onSubmit }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-100">
         <h2 className="text-xl font-bold mb-4 text-black">Create Job Post</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -71,13 +97,28 @@ const JobPostForm = ({ onClose, onSubmit }) => {
                 className="flex-1 p-2 border border-black rounded text-black"
                 placeholder="Enter skill and press Add"
               />
-              <button
+              {/* Always render UL (empty if no suggestions) */}
+              <ul className="border border-gray-300 rounded mt-1 bg-white shadow w-64 h-40 overflow-y-auto">
+                {suggestions.map((skill) => (
+                  <li
+                    key={skill.id}
+                    className="p-2 hover:bg-blue-300 cursor-pointer text-black"
+                    onClick={() => handleAddSkill(skill.name)}
+                  >
+                    {skill.name}
+                  </li>
+                ))}
+              </ul>
+              {/*
+               <button
                 type="button"
-                onClick={handleAddSkill}
+                onClick={()=>handleAddSkill()}
                 className="bg-green-500 text-white px-3 py-1 rounded"
               >
                 Add
               </button>
+              */}
+            
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.skills.map((skill, idx) => (
@@ -97,10 +138,6 @@ const JobPostForm = ({ onClose, onSubmit }) => {
               ))}
             </div>
           </div>
-
-
-
-
           <div className="flex justify-end space-x-2">
             <button
               type="button"
@@ -111,7 +148,7 @@ const JobPostForm = ({ onClose, onSubmit }) => {
             </button>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
             >
               Create
             </button>
