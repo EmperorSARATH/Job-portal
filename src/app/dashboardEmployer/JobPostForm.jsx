@@ -27,6 +27,7 @@ const JobPostForm = ({ mode, objectId, onClose, onSubmit }) => {
         );
         const data = await res.json();
         setSuggestions(data);
+        setSkillInput(data.name());
       } catch (err) {
         console.error(err);
       }
@@ -103,7 +104,7 @@ const JobPostForm = ({ mode, objectId, onClose, onSubmit }) => {
                   <li
                     key={skill.id}
                     className="p-2 hover:bg-blue-300 cursor-pointer text-black"
-                    onClick={() => handleAddSkill(skill.name)}
+                    onClick={() => handleAddSkill(skill.id)}
                   >
                     {skill.name}
                   </li>

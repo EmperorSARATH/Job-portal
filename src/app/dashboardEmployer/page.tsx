@@ -175,7 +175,11 @@ export default function Dashboard() {
         ))}
         {/* Plus Button appearing after the last card */}
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+              setShowForm(true);
+              setFormMode("create");
+          }}
+          
           className="bg-green-500 hover:bg-blue-600 text-white p-4 rounded-lg shadow-lg flex items-center justify-center"
           style={{ width: "20%", height: "20%" }} // Makes it match card size
         >
