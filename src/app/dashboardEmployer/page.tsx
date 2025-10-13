@@ -135,14 +135,26 @@ export default function Dashboard() {
         }
     };
 
+    // useEffect(() => {
+    //     if (!user) {
+    //         // Wait for 2 seconds and then redirect to the login page
+    //         setTimeout(() => {
+    //             redirect("/EmployerLogin");
+    //         }, 1000);
+    //     }
+    // }, [user]); // This effect will run when `user` changes.
+
+
     useEffect(() => {
-        if (!user) {
-            // Wait for 2 seconds and then redirect to the login page
-            setTimeout(() => {
-                redirect("/EmployerLogin");
-            }, 100);
-        }
-    }, [user]); // This effect will run when `user` changes.
+  const token = localStorage.getItem("accessToken");
+
+  if (!token) {
+    setTimeout(() => {
+      redirect("/EmployerLogin");
+    }, 1000);
+  }
+}, []);
+
 
     if (!user) {
         return <p>Loading...</p>;
