@@ -1,0 +1,15 @@
+.custom-h1 {
+  text-align: center;
+  font-size: 3rem; /* Tailwind text-5xl ≈ 3rem */
+  transition: opacity 2s ease-in-out;
+  font-family: 'Lobster', cursive;
+}
+
+/* Fade in/out controlled by state */
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
