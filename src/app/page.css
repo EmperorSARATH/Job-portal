@@ -1,9 +1,27 @@
+
+
 .custom-h1 {
   text-align: center;
   font-size: 3rem; /* Tailwind text-5xl ≈ 3rem */
   transition: opacity 2s ease-in-out;
   font-family: 'Lobster', cursive;
+  animation: slideFromTop  2s ease-out ;
 }
+
+
+
+@keyframes slideFromTop {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
 
 /* Fade in/out controlled by state */
 .fade-in {

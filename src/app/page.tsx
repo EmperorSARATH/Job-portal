@@ -23,17 +23,20 @@ export default function SmoothScrollPage() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % phrases.length);
-        }, 2000);
+        }, 4500);
         return () => clearInterval(interval);
     }, []);
 
     return (
         <>
-            <div className="flex items-center justify-center flex-col h-screen">
+            <div className=" relative flex items-center justify-center flex-col h-screen bg-cover bg-center  ease-in-out " style={{
+                backgroundImage: `url(/Images/pic${currentIndex}.jpg)`,
+            }}>
+  <div className="absolute inset-0 bg-black/60"></div>
                 <div className="current-page-content">
 
                     <h1
-                        className={`"text-center text-5xl custom-h1" custom-h1 ${fade ? "fade-in" : "fade-out"}`}
+                        className={`"text-center text-5xl custom-h1 relative z-10" custom-h1 ${fade ? "fade-in" : "fade-out"}`}
                         style={{ fontFamily: "'Lobster', cursive" }}
 
                     >
