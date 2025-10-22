@@ -32,7 +32,7 @@ export default function SmoothScrollPage() {
             <div className=" relative flex items-center justify-center flex-col h-screen bg-cover bg-center  ease-in-out " style={{
                 backgroundImage: `url(/Images/pic${currentIndex}.jpg)`,
             }}>
-  <div className="absolute inset-0 bg-black/60"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
                 <div className="current-page-content">
 
                     <h1
@@ -48,8 +48,12 @@ export default function SmoothScrollPage() {
                 </div>
             </div>
 
-            {/* New Section */}
-            <HomeUserSelection ref={nextSectionRef} />
+
+            <div className="flex items-center justify-center h-screen bg-gray-100">
+                {/* New Section */}
+                <HomeUserSelection ref={nextSectionRef} />
+            </div>
+
         </>
     );
 }
