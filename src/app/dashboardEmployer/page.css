@@ -1,0 +1,33 @@
+/* Default: button behaves normally */
+
+.top-button {
+  width: 20%;
+  height: 20%;
+  background-color: #22c55e; /* Tailwind green-500 */
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: static; /* default */
+}
+
+/* On small screens: position absolute at top */
+@media (max-width: 768px) {
+  .outer-container {
+    position: relative;
+  }
+
+  .top-button {
+    position: absolute;
+    top: 1px;
+    left: 10px;
+    width: 20px;   /* adjust size for mobile */
+    height: 10px;  /* adjust size for mobile */
+    z-index: 10;
+  }
+}
+

@@ -9,7 +9,7 @@ import Sidebar from "../dashboard/sidebar";
 import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
 import { redirect } from "next/navigation";
-
+import "./page.css";
 export interface SkillDTO {
     objectId: string;
     name: string;
@@ -172,7 +172,7 @@ export default function Dashboard() {
             </div>
 
             {/* Grid of Dynamic Cards */}
-            <div className="rounded-lg p-4 m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className=" outer-container rounded-lg p-4 m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {data.map((item) => (
                     <div
                         key={item.objectId}
@@ -215,8 +215,7 @@ export default function Dashboard() {
                         setFormMode("create");
                     }}
 
-                    className="bg-green-500 hover:bg-blue-600 text-white p-4 rounded-lg shadow-lg flex items-center justify-center"
-                    style={{ width: "20%", height: "20%" }} // Makes it match card size
+                    className="top-button"
                 >
                     +
                 </button>
