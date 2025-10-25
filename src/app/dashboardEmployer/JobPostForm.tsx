@@ -110,10 +110,10 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-100">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
                 <h2 className="text-xl font-bold mb-4 text-black">{mode == "create" ? "Create Job Post" : "Edit Job Post"}</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
+                    <div className="w-full">
                         <label className="block font-medium text-black">Title</label>
                         <input
                             type="text"
