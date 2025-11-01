@@ -113,6 +113,22 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
                 <h2 className="text-xl font-bold mb-4 text-black">{mode == "create" ? "Create Job Post" : "Edit Job Post"}</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <label className="block font-medium text-black mb-1">Task Size</label>
+                    <div className="flex gap-4 mb-4">
+                        {["small", "mid", "large"].map((size) => (
+                            <label key={size} className="flex items-center gap-2 text-black">
+                                <input
+                                    type="radio"
+                                    name="jobType"
+                                    value={size}
+                                    onChange={handleChange}
+                                    className="accent-blue-600"
+                                    required
+                                />
+                                {size.charAt(0).toUpperCase() + size.slice(1)}
+                            </label>
+                        ))}
+                    </div>
                     <div className="w-full">
                         <label className="block font-medium text-black">Title</label>
                         <input
