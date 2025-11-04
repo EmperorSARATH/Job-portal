@@ -27,6 +27,7 @@ interface FormData {
     title: string;
     description: string;
     skills: Map<number, string>;
+    taskSize : string;
 }
 
 
@@ -74,7 +75,8 @@ export default function Dashboard() {
                     description: formData.description,
                     title: formData.title,
                     objectId: objectId,
-                    skills: skillsList
+                    skills: skillsList,
+                    taskSize : formData.taskSize
                 };
                 const response = await apiClient("http://localhost:8080/create/jobPostCard", {
                     method: "POST",

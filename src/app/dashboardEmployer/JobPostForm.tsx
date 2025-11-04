@@ -8,6 +8,7 @@ interface FormData {
     title: string;
     description: string;
     skills: Map<number, string>;
+    taskSize: string;
 }
 
 interface Skill {
@@ -34,10 +35,12 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
         title: "",
         description: "",
         skills: new Map(),
+        taskSize: ""
     });
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        console.log("changing:", e.target.name, "=", e.target.value);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -76,6 +79,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
             title: "",
             description: "",
             skills: new Map(),
+            taskSize: ""
         });
         // Reset form after submit
     };
@@ -119,8 +123,9 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
                             <label key={size} className="flex items-center gap-2 text-black">
                                 <input
                                     type="radio"
-                                    name="jobType"
-                                    value={size}
+                                    name="taskSize"
+                                    value={size}                        // ✅ use the individual value
+                                    checked={formData.taskSize === size} // ✅ keeps it in sync
                                     onChange={handleChange}
                                     className="accent-blue-600"
                                     required
@@ -128,6 +133,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
                                 {size.charAt(0).toUpperCase() + size.slice(1)}
                             </label>
                         ))}
+
                     </div>
                     <div className="w-full">
                         <label className="block font-medium text-black">Title</label>
