@@ -6,11 +6,13 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "./userSlice";
 import jobReducer from "./jobSlice";
+import jobSearch from "./jobSearch";
 
 // 1. Combine reducers
 const rootReducer = combineReducers({
   user: userReducer,
   job: jobReducer,
+  jobSearch:jobSearch, 
 });
 
 // 2. Setup persist config

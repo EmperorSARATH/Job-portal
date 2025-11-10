@@ -119,7 +119,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <label className="block font-medium text-black mb-1">Task Size</label>
                     <div className="flex gap-4 mb-4">
-                        {["small", "mid", "large"].map((size) => (
+                        {["SMALL", "MID", "LARGE"].map((size) => (
                             <label key={size} className="flex items-center gap-2 text-black">
                                 <input
                                     type="radio"

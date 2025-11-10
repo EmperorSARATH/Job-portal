@@ -2,8 +2,10 @@
 
 import { apiClient } from "@/lib/apiClient";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedJob } from "../store/jobSlice";
+import { AppDispatch, RootState } from "../store/store";
+import { fetchJobSearch } from "../store/jobSearch";
 
 
 export interface SkillDTO {
@@ -27,22 +29,28 @@ interface JobsListProps {
 
 const JobsList = ({filter}:JobsListProps) => {
 
-  const [job, setJobs] = useState<JobDTO[]>([]); 
+    const dispatch = useDispatch<AppDispatch>();
+  const jobs = useSelector((state: RootState) => state.jobSearch.list);
+  //
+  // const [job, setJobs] = useState<JobDTO[]>([]); 
+
   useEffect(() => {
 
 
     const fetchJobs = async () => {
       try {
-        let response = null;
-        if(filter!=null){
-        response = await apiClient(`http://localhost:8080/list/jobs?filter=${encodeURIComponent(filter)}`);
-
-        }else{
-        response = await apiClient('http://localhost:8080/list/jobs');
-
-        }
-        const result = await response.json(); // parse JSON
-        setJobs(result.content); // <-- set only the `content` array
+        // let response = null;
+        // if(filter!=null){
+        // response = await apiClient(`http://localhost:8080/list/jobs?filter=${encodeURIComponent(filter)}`);
+        //
+        // }else{
+        // response = await apiClient('http://localhost:8080/list/jobs');
+        //
+        // }
+        // const result = await response.json(); // parse JSON
+        // setJobs(result.content); // <-- set only the `content` array
+        //
+        dispatch(fetchJobSearch(filter || null));
       } catch (error) {
         console.error('Failed to fetch jobs:', error);
       }
@@ -52,7 +60,6 @@ const JobsList = ({filter}:JobsListProps) => {
   }, [filter]);
 
 
-   const dispatch = useDispatch();
 
   const handleCardClick = (selectedJob: JobDTO) => {
     console.log("anamika is learning !!!!!",selectedJob);
@@ -64,7 +71,7 @@ const JobsList = ({filter}:JobsListProps) => {
   return (
     <div>
       <div className="h-[70vh] overflow-y-auto space-y-4">
-        {job.map((job) => (
+        {jobs.map((job) => (
           <div
             key={job.objectId} // <-- use a unique id if available
              onClick={() => handleCardClick(job)}
