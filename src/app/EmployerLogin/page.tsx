@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/lib/apiClient";
+import {config} from '@/lib/config';
 
 
 export default function LoginPage() {
@@ -30,7 +31,7 @@ export default function LoginPage() {
 
     try {
       // Send the request to the server
-      const response = await fetch("http://localhost:8080/api/users/login", {
+      const response = await fetch(`${config.apiBaseUrl}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
