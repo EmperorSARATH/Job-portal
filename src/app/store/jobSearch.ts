@@ -30,7 +30,10 @@ export const fetchJobSearch = createAsyncThunk(
 const jobSearch = createSlice({
   name: 'jobSearch',
   initialState,
-  reducers: {},
+  reducers: {
+      setJobs: (state, action: PayloadAction<JobDTO[]>) => {
+      state.list = action.payload;
+    }},
   extraReducers: builder => {
     builder
       .addCase(fetchJobSearch.pending, state => { state.loading = true; })
@@ -41,6 +44,7 @@ const jobSearch = createSlice({
       .addCase(fetchJobSearch.rejected, state => { state.loading = false; });
   }
 });
+export const { setJobs } = jobSearch.actions;
 
 export default jobSearch.reducer;
 

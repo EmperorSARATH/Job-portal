@@ -1,4 +1,4 @@
-"use client"; // Ensure client-side rendering
+"use client"; // Ensure client-side rendering 
 import { useRef, useState, useEffect } from "react";
 import HomeUserSelection from "./components/homeUserSelection";
 import "./page.css";
