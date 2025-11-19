@@ -19,7 +19,8 @@ interface CardData {
     objectId: string;
     title: string;
     description: string;
-    skills: []
+    skills: [];
+    taskSize: string
 }
 
 
@@ -27,7 +28,7 @@ interface FormData {
     title: string;
     description: string;
     skills: Map<number, string>;
-    taskSize : string;
+    taskSize: string;
 }
 
 
@@ -39,6 +40,18 @@ interface PaginatedResponse {
     number: number;
 }
 
+const green = "#4CAF50";   // soft green
+const yellow = "#FFC107";  // amber yellow
+const red = "#F44336";     // material red
+
+const colors = {
+    SMALL: green,
+    MID: yellow,
+    LARGE: red,
+};
+
+
+
 export default function Dashboard() {
     const user = useSelector((state: RootState) => state.user.user);
     const [data, setData] = useState<CardData[]>([]);
@@ -49,7 +62,7 @@ export default function Dashboard() {
 
     const fetchData = async () => {
         try {
-            const response = await apiClient("http://localhost:8080/list/jobPostCard"); // Replace with actual API URL
+            const response = await apiClient("http://localhost:8080/list/jobPostCard");
             const result: PaginatedResponse = await response.json();
             setData(result.content);
             console.log(result.content, "values")
@@ -76,7 +89,7 @@ export default function Dashboard() {
                     title: formData.title,
                     objectId: objectId,
                     skills: skillsList,
-                    taskSize : formData.taskSize
+                    taskSize: formData.taskSize
                 };
                 const response = await apiClient("http://localhost:8080/create/jobPostCard", {
                     method: "POST",
@@ -148,14 +161,14 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-  const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");
 
-  if (!token) {
-    setTimeout(() => {
-      redirect("/EmployerLogin");
-    }, 1000);
-  }
-}, []);
+        if (!token) {
+            setTimeout(() => {
+                redirect("/EmployerLogin");
+            }, 1000);
+        }
+    }, []);
 
 
     if (!user) {
@@ -180,22 +193,35 @@ export default function Dashboard() {
                         key={item.objectId}
                         className="relative bg-blue-500 text-white flex flex-col items-center justify-center rounded-lg shadow-lg p-4"
                     >
+
+                        <button className="absolute top-2 left-2 rounded-full">
+                            <div
+                                className="w-4 h-4"
+                                style={{ backgroundColor: colors[item.taskSize] }}
+                            ></div>
+                        </button>
+
                         {/* Close Button */}
                         <button
                             //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
-                            className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-1 hover:bg-red-600"
+                            className="absolute top-2 right-2 text-white  rounded-full  hover:bg-red-600"
                             onClick={() => {
                                 isDeleted(item.objectId)
                             }
                             }
 
                         >
-                            ✖
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 7.5l.867 12.06A2.25 2.25 0 009.11 21h5.78a2.25 2.25 0 002.243-1.44L18 7.5M4.5 7.5h15M10 11v6m4-6v6m-7.5-9V5.25A2.25 2.25 0 019.75 3h4.5A2.25 2.25 0 0116.5 5.25V7.5" />
+                            </svg>
                         </button>
 
                         <button
                             //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
-                            className="absolute bottom-2 right-2 text-white bg-orange-500 rounded-full p-1 hover:bg-orange-600"
+                            className="absolute bottom-2 right-2 text-white  rounded-full  hover:bg-blue-600"
                             onClick={() => {
                                 setFormMode("edit");
                                 setShowForm(true);
@@ -203,7 +229,13 @@ export default function Dashboard() {
                             }}
 
                         >
-                            ^
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.862 4.487l1.688 1.687a1.5 1.5 0 010 2.122l-8.5 8.5-3.373.843.842-3.374 8.5-8.5a1.5 1.5 0 012.121 0z" />
+                            </svg>
+
                         </button>
 
                         <h3 className="text-lg font-bold">{item.title}</h3>
