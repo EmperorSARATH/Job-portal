@@ -45,11 +45,11 @@ export default function Dashboard() {
     //   <Sidebar name = {user.username}/>
     // </div>
 
-    <div className="mt-4 space-y-4">
+    <div className="mt-4  space-y-4">
       {/* First Row: Search Bar & Sidebar */}
       <div className="flex items-center justify-between w-full">
         {/* Left group: Search + Filter */}
-        <div className="flex items-center space-x-4">
+        <div className="ml-4 mb-10 flex items-center space-x-4">
           <SearchBar />
           <FilterDropdown onFilterChange={setSelectedFilter} />
         </div>
@@ -60,7 +60,7 @@ export default function Dashboard() {
 
       {/* Second Row: Two Columns with Vertical Line */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="pr-4  border-r-2 border-red-500">
+        <div className="ml-8 pr-4  border-r-2 border-red-500">
           {/* Component left*/}
           <JobsList filter = {selectedFilter} />
         </div>
