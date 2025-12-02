@@ -45,7 +45,7 @@ export default function Dashboard() {
     //   <Sidebar name = {user.username}/>
     // </div>
 
-    <div className="mt-4  space-y-4">
+    <div className="mt-4 min-h-screen space-y-4 bg-[#F9F9F9]">
       {/* First Row: Search Bar & Sidebar */}
       <div className="flex items-center justify-between w-full">
         {/* Left group: Search + Filter */}

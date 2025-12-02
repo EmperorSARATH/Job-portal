@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import './page.css';
+import PersonalDetail from './PersonalDetail';
 export default function Page() {
 
     const [activeSection, setActiveSection] = useState("github");
@@ -17,7 +18,7 @@ export default function Page() {
                 <h1 className="text-xl font-semibold mb-4 text-black">Profile</h1>
                 <h1 className='text-black mb-4'>-------------------------</h1>
                 <ul className='text-black'>
-                    <li><button onClick={()=>setActiveSection("")}>Personal Detail</button></li>
+                    <li><button onClick={()=>setActiveSection("personalDetail")}>Personal Detail</button></li>
                     <li><button>Profile Summary</button></li>
                     <li><button>Skills</button></li>
                     <li><button>Saved jobs</button></li>
@@ -56,6 +57,13 @@ export default function Page() {
                 {activeSection === "" && (
                     <p className="text-gray-500 text-lg">Select an item from the left menu</p>
                 )}
+
+                {activeSection === "personalDetail" && (
+                    <div className='w-full  '>
+                        <PersonalDetail/>
+                    </div>
+                )}
+
             </div>
 
 
