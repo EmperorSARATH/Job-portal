@@ -1,3 +1,6 @@
+
+
+
 "use client"
 import React, { useState } from "react";
 
@@ -48,14 +51,14 @@ const Registration: React.FC = () => {
     return !Object.values(newErrors).some((error) => error !== "");
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)  => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validate()) {
       console.log("Form Submitted:", formData);
       // Add API call or submission logic here
       try {
 
-        const response = await fetch("http://localhost:8080/api/users/reg/employer", {
+        const response = await fetch("http://localhost:8080/api/users/reg/employee", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +80,6 @@ const Registration: React.FC = () => {
         console.log("error", err);
 
       }
-
     }
   };
 
@@ -87,7 +89,7 @@ const Registration: React.FC = () => {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-4 text-black">Registration for Employer</h1>
+        <h1 className="text-2xl font-bold mb-4 text-black">Registration for Employee</h1>
 
         {/* Email Field */}
         <div className="mb-4">
@@ -117,7 +119,7 @@ const Registration: React.FC = () => {
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            className={`mt-1 p-2 block w-full border ${errors.username ? "border-red-500" : "border-gray-300"
+            className={`mt-1 p-2 block w-full border text-black ${errors.username ? "border-red-500" : "border-gray-300"
               } rounded shadow-sm focus:ring focus:ring-blue-500`}
           />
           {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
@@ -134,7 +136,7 @@ const Registration: React.FC = () => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            className={`mt-1 p-2 block w-full border ${errors.password ? "border-red-500" : "border-gray-300"
+            className={`mt-1 p-2 block w-full text-black border ${errors.password ? "border-red-500" : "border-gray-300"
               } rounded shadow-sm focus:ring focus:ring-blue-500`}
           />
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
