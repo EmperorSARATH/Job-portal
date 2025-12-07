@@ -29,7 +29,7 @@ const HomeUserSelection = forwardRef<HTMLDivElement>((_, ref) => {
 
                 <div className='md:mr-5 border border-gray-300 shadow-lg rounded-lg p-6 bg-white'>
                     <Link href="/Registration/EmployeeReg">
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded mt-5">
+                        <button className="bg-green-500 text-white px-4 py-2 rounded mt-5">
                             Sign Up
                         </button>
                     </Link>
