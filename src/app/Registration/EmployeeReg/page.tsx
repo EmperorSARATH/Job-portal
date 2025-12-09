@@ -99,7 +99,7 @@ const Registration: React.FC = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className={`mt-1 p-2 block w-full border ${errors.email ? "border-red-500" : "border-gray-300"
+            className={`mt-1 p-2 block w-full border text-black ${errors.email ? "border-red-500" : "border-gray-300"
               } rounded shadow-sm focus:ring focus:ring-blue-500`}
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
