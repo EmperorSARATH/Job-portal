@@ -27,7 +27,7 @@ interface CardData {
 interface FormData {
     title: string;
     description: string;
-    skills: Map<number, string>;
+    skills: { objectId: string; name: string }[];
     taskSize: string;
 }
 
@@ -50,6 +50,15 @@ const colors = {
     LARGE: red,
 };
 
+type Job = {
+    objectId: string;
+    title: string;
+    description: string;
+    taskSize: "SMALL" | "MID" | "LARGE";
+    skills: Map<string, string>;
+};
+
+
 
 
 export default function Dashboard() {
@@ -57,6 +66,8 @@ export default function Dashboard() {
     const [data, setData] = useState<CardData[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [objectId, setObjectId] = useState("");
+
+    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
     const [formMode, setFormMode] = useState("create");
 
@@ -104,10 +115,12 @@ export default function Dashboard() {
                 fetchData();
 
             } else if (mode === "edit") {
-                const skillsList = Array.from(formData.skills.entries()).map(([objectId, name]) => ({
-                    objectId,
-                    name
-                }));
+                const skillsList = formData.skills.map(skill => ({
+                    objectId: skill.objectId,
+                    name: skill.name
+                }))
+
+                console.log("skillList", skillsList);
 
 
                 const req = {
@@ -223,6 +236,7 @@ export default function Dashboard() {
                             //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
                             className="absolute bottom-2 right-2 text-white  rounded-full  hover:bg-blue-600"
                             onClick={() => {
+                                setSelectedJob(item);
                                 setFormMode("edit");
                                 setShowForm(true);
                                 setObjectId(item.objectId);
@@ -255,7 +269,7 @@ export default function Dashboard() {
                 </button>
             </div>
             {/* Render Form when 'showForm' is true */}
-            {showForm && <JobPostForm mode={formMode} objectId={objectId} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
+            {showForm && <JobPostForm mode={formMode} objectId={objectId} job={selectedJob} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
 
         </div>
     );

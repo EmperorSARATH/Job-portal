@@ -4,39 +4,56 @@ import { apiClient } from "@/lib/apiClient";
 import { useState, useEffect } from "react";
 
 
+
 interface FormData {
     title: string;
     description: string;
-    skills: Map<number, string>;
+    skills: { objectId: string; name: string }[];
     taskSize: string;
 }
 
+
 interface Skill {
-    id: number;
+    id: string;
     name: string;
     category: string;
 }
 
 
+type Job = {
+    objectId: string;
+    title: string;
+    description: string;
+    taskSize: "SMALL" | "MID" | "LARGE";
+    skills: { objectId: string; name: string }[];
+    // any other fields
+};
+
+
+
 interface JobPostFormProps {
     mode: string;
-    objectId?: string;
+    job?: Job
     onClose: () => void;
     onSubmit: (data: FormData, mode: string, objectId?: string) => void;
 }
 
 
-const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSubmit }) => {
+const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, onSubmit }) => {
     // component body
 
 
+    console.log(job);
 
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState({
         title: "",
         description: "",
-        skills: new Map(),
-        taskSize: ""
+        taskSize: "" as Job["taskSize"] | "",
+        skills: [] as { objectId: string; name: string }[]
     });
+
+
+
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -72,13 +89,42 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
         return () => clearTimeout(handler);
     }, [skillInput]);
 
+
+
+    useEffect(() => {
+        if (mode === "edit" && job) {
+            const selectedSkills = Array.from(job.skills.entries()).map(
+                ([id, name]) => ({
+                    objectId: String(id), // ensure string
+                    name: String(name)    // ensure string
+                })
+            );
+
+            setFormData({
+                title: job.title,
+                description: job.description,
+                taskSize: job.taskSize,
+                skills: job.skills.map(skill => ({
+                    objectId: skill.objectId,
+                    name: skill.name
+                }))
+            });
+
+
+        }
+    }, [mode, job]);
+
+
+
+
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(formData, mode, objectId);
         setFormData({
             title: "",
             description: "",
-            skills: new Map(),
+            skills: [] as { objectId: string; name: string }[],
             taskSize: ""
         });
         // Reset form after submit
@@ -88,28 +134,30 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
     const handleAddSkill = (skill: Skill) => {
         if (!skill) return;
 
-        setFormData((prev) => {
-            const newSkills = new Map(prev.skills);
+        setFormData(prev => {
+            // prevent duplicates
+            const exists = prev.skills.some(s => s.id === skill.id);
+            if (exists) return prev;
 
-            // Only add if not already in the map
-            if (!newSkills.has(skill.id)) {
-                newSkills.set(skill.id, skill.name);
-            }
-
-            return { ...prev, skills: newSkills };
+            return {
+                ...prev,
+                skills: [...prev.skills, { id: skill.id, name: skill.name }]
+            };
         });
 
-        setSkillInput(''); // clear input
+        setSkillInput(""); // clear input
     };
 
 
-    const handleRemoveSkill = (skillId: number) => {
-        setFormData((prev) => {
-            const newSkills = new Map(prev.skills); // create a copy
-            newSkills.delete(skillId); // remove by id
-            return { ...prev, skills: newSkills };
-        });
+
+
+    const handleRemoveSkill = (skillId: string) => {
+        setFormData(prev => ({
+            ...prev,
+            skills: prev.skills.filter(skill => skill.objectId !== skillId)
+        }));
     };
+
 
 
     return (
@@ -196,15 +244,15 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, onClose, onSu
 
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            {Array.from(formData.skills.entries()).map(([id, name]) => (
+                            {formData.skills.map(({ objectId, name }) => (
                                 <span
-                                    key={id}
+                                    key={objectId}
                                     className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center space-x-1"
                                 >
                                     <span>{name}</span>
                                     <button
                                         type="button"
-                                        onClick={() => handleRemoveSkill(id)}
+                                        onClick={() => handleRemoveSkill(objectId)}
                                         className="text-red-500 font-bold ml-1"
                                     >
                                         ×
