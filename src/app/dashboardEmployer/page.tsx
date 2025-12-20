@@ -91,10 +91,10 @@ export default function Dashboard() {
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
         try {
             if (mode === "create") {
-                const skillsList = Array.from(formData.skills.entries()).map(([objectId, name]) => ({
-                    objectId,
-                    name
-                }));
+                const skillsList = formData.skills.map(skill =>({
+                    objectId: skill.objectId,
+                    name: skill.name
+                })); 
                 const req = {
                     description: formData.description,
                     title: formData.title,
@@ -190,7 +190,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="mt-4 space-y-4">
+        <div className="bg-[#FFFFFF] mt-4 space-y-4 ">
             {/* First Row: Search Bar & Sidebar */}
             <div className="flex items-center justify-between space-x-4">
                 <SearchBar />
@@ -226,7 +226,7 @@ export default function Dashboard() {
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-5 h-5">
+                                className="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M6 7.5l.867 12.06A2.25 2.25 0 009.11 21h5.78a2.25 2.25 0 002.243-1.44L18 7.5M4.5 7.5h15M10 11v6m4-6v6m-7.5-9V5.25A2.25 2.25 0 019.75 3h4.5A2.25 2.25 0 0116.5 5.25V7.5" />
                             </svg>
@@ -245,7 +245,7 @@ export default function Dashboard() {
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-5 h-5">
+                                className="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M16.862 4.487l1.688 1.687a1.5 1.5 0 010 2.122l-8.5 8.5-3.373.843.842-3.374 8.5-8.5a1.5 1.5 0 012.121 0z" />
                             </svg>

@@ -136,12 +136,12 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, 
 
         setFormData(prev => {
             // prevent duplicates
-            const exists = prev.skills.some(s => s.id === skill.id);
+            const exists = prev.skills.some(s => s.objectId === skill.id);
             if (exists) return prev;
 
             return {
                 ...prev,
-                skills: [...prev.skills, { id: skill.id, name: skill.name }]
+                skills: [...prev.skills, { objectId: skill.id, name: skill.name }]
             };
         });
 
