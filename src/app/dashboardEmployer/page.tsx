@@ -190,7 +190,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="bg-[#FFFFFF] mt-4 space-y-4 ">
+        <div className="bg-[#FFFFFF] min-h-screen mt-4 space-y-4 ">
             {/* First Row: Search Bar & Sidebar */}
             <div className="flex items-center justify-between space-x-4">
                 <SearchBar />
