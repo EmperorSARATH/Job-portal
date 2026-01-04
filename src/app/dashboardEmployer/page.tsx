@@ -91,10 +91,10 @@ export default function Dashboard() {
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
         try {
             if (mode === "create") {
-                const skillsList = formData.skills.map(skill =>({
+                const skillsList = formData.skills.map(skill => ({
                     objectId: skill.objectId,
                     name: skill.name
-                })); 
+                }));
                 const req = {
                     description: formData.description,
                     title: formData.title,
@@ -204,7 +204,7 @@ export default function Dashboard() {
                 {data.map((item) => (
                     <div
                         key={item.objectId}
-                        className="relative bg-blue-500 text-white flex flex-col items-center justify-center rounded-lg shadow-lg p-4"
+                        className="relative bg-blue-500 text-white flex flex-col items-center justify-center rounded-lg shadow-lg p-4 min-h-[260px]"
                     >
 
                         <button className="absolute top-2 left-2 rounded-full">
@@ -230,6 +230,7 @@ export default function Dashboard() {
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M6 7.5l.867 12.06A2.25 2.25 0 009.11 21h5.78a2.25 2.25 0 002.243-1.44L18 7.5M4.5 7.5h15M10 11v6m4-6v6m-7.5-9V5.25A2.25 2.25 0 019.75 3h4.5A2.25 2.25 0 0116.5 5.25V7.5" />
                             </svg>
+
                         </button>
 
                         <button
@@ -252,8 +253,25 @@ export default function Dashboard() {
 
                         </button>
 
+
+                         
+
                         <h3 className="text-lg font-bold">{item.title}</h3>
                         <p className="text-sm">{item.description}</p>
+                        {/* <p className="absolute bottom-0 pt-7 ">Amount offered : </p> */}
+
+
+                         <div className="mt-auto flex flex-wrap gap-2 justify-center">
+                            {item.skills.map((skill) => (
+                                <span
+                                    key={skill.objectId}
+                                    className="px-3 py-1 text-xs bg-white/20 rounded-full"
+                                >
+                                    {skill.name}
+                                </span>
+                            ))}
+                        </div>
+
                     </div>
                 ))}
                 {/* Plus Button appearing after the last card */}
