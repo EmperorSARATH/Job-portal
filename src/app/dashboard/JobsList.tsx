@@ -80,7 +80,14 @@ const JobsList = ({ filter }: JobsListProps) => {
                     >
                         <div className="flex items-center justify-between mb-2">
                             <h3 className="text-lg font-semibold text-gray-800">{job.title}</h3>
-                            <span className="text-sm text-blue-600">{job.location || "Bangalore"}</span>
+                            <span className="flex flex-col text-sm text-blue-600">
+                                {job.location || "Bangalore"}
+
+                                <button className="flex items-center gap-2 text-black">
+                                    💬 Chat
+                                </button>
+
+                            </span>
                         </div>
                         <p className="text-sm text-gray-600 mb-2">{job.company || "Sarath company"} • {job.city}</p>
                         <div className="flex flex-wrap gap-2 text-xs text-white">
