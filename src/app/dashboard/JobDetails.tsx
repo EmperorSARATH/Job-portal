@@ -2,9 +2,13 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { useState } from "react";
+import  DirectChat  from './DirectChat';
 
 export default function JobDetails() {
     const selectedJob = useSelector((state: RootState) => state.job.selectedJob);
+
+    const [chatClicked, setChatClicked] = useState(false);
 
     if (!selectedJob) {
         return <p>No job selected.</p>;
@@ -20,10 +24,23 @@ export default function JobDetails() {
         <div className="p-4 rounded-xl bg-white shadow-md w-full">
             <div className="flex justify-between">
                 <h2 className="text-xl font-bold mb-4 text-gray-800">Frontend Developer</h2>
-                <button className="flex items-center gap-2 text-black">
+                <button onClick={() => setChatClicked(prev => !prev)}
+                    className="flex items-center gap-2 text-black">
                     💬 Chat
                 </button>
+
+
             </div>
+
+            {
+                chatClicked && (
+                    <div>
+                        <DirectChat />
+                    </div>
+                )
+            }
+
+
             <div className="space-y-2 text-sm sm:text-base text-gray-700">
                 <p>
                     <span className="font-semibold">Company:</span> TechSpark Inc.
