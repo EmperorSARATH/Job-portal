@@ -39,7 +39,7 @@ interface JobPostFormProps {
 }
 
 
-const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, onSubmit }) => {
+const JobPostForm: React.FC<JobPostFormProps> = ({ mode, objectId, job, onClose, onSubmit }) => {
     // component body
 
 
@@ -65,7 +65,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, 
     const [skillInput, setSkillInput] = useState('');
 
     useEffect(() => {
-        if (!skillInput.trim()) {
+        if (!skillInput || !skillInput.trim()) {
             setSuggestions([]);
             return;
         }
@@ -78,7 +78,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, 
                 );
                 const data = await res.json();
                 setSuggestions(data);
-                setSkillInput(data.name);
+               // setSkillInput(data.name);
             } catch (err) {
                 console.error(err);
             }
