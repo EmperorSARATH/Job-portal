@@ -35,6 +35,7 @@ const JobsList = ({ filter }: JobsListProps) => {
     //
     // const [job, setJobs] = useState<JobDTO[]>([]); 
 
+
     useEffect(() => {
 
 

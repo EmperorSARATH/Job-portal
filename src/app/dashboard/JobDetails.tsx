@@ -3,7 +3,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useState } from "react";
-import  DirectChat  from './DirectChat';
+import DirectChat from './DirectChat';
 
 export default function JobDetails() {
     const selectedJob = useSelector((state: RootState) => state.job.selectedJob);
@@ -56,7 +56,8 @@ export default function JobDetails() {
                 </p>
                 <div>
                     <div className="mt-4 flex flex-wrap gap-2">
-                        <p>Skills Required: </p> {selectedJob?.skills.map((skill) => (
+                        <p>Skills Required: </p>
+                        {selectedJob?.skills.map((skill) => (
                             <span key={skill.objectId} className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
                                 {skill.name}
                             </span>

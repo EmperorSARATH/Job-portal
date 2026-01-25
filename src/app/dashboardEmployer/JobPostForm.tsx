@@ -78,7 +78,7 @@ const JobPostForm: React.FC<JobPostFormProps> = ({ mode,objectId, job, onClose, 
                 );
                 const data = await res.json();
                 setSuggestions(data);
-                setSkillInput(data.name());
+                setSkillInput(data.name);
             } catch (err) {
                 console.error(err);
             }
