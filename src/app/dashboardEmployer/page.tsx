@@ -9,7 +9,7 @@ import Sidebar from "../dashboard/sidebar";
 import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
 import { redirect } from "next/navigation";
-import "./page.css";
+import "./page.css"//;
 export interface SkillDTO {
     objectId: string;
     name: string;
@@ -19,7 +19,7 @@ interface CardData {
     objectId: string;
     title: string;
     description: string;
-    skills: [];
+    skills: SkillDTO[];
     taskSize: string
 }
 
@@ -127,7 +127,8 @@ export default function Dashboard() {
                     description: formData.description,
                     title: formData.title,
                     objectId: objectId,
-                    skills: skillsList
+                    skills: skillsList,
+                    taskSize: formData.taskSize
                 };
 
                 const response = await apiClient("http://localhost:8080/edit/jobPostCard", {
@@ -262,7 +263,7 @@ export default function Dashboard() {
 
 
                          <div className="mt-auto flex flex-wrap gap-2 justify-center">
-                            {item.skills.map((skill) => (
+                            {item.skills?.map((skill) => (
                                 <span
                                     key={skill.objectId}
                                     className="px-3 py-1 text-xs bg-white/20 rounded-full"
