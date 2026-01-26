@@ -23,10 +23,12 @@ export default function JobDetails() {
     return (
         <div className="p-4 rounded-xl bg-white shadow-md w-full">
             <div className="flex justify-between">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Frontend Developer</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-800"> {selectedJob.title}</h2>
                 <button onClick={() => setChatClicked(prev => !prev)}
-                    className="flex items-center gap-2 text-black">
+                    className="flex-row items-center gap-2 text-black">
                     💬 Chat
+                    <p>PostedBy : {selectedJob.userName}</p>
+
                 </button>
 
 
@@ -45,6 +47,8 @@ export default function JobDetails() {
                 <p>
                     <span className="font-semibold">Company:</span> TechSpark Inc.
                 </p>
+
+                <p>Task size : {selectedJob.taskSize}</p>
                 <p>
                     <span className="font-semibold">Location:</span> Remote / Bangalore
                 </p>

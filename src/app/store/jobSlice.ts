@@ -15,6 +15,8 @@ export interface Job {
   company?: string;
   city?: string;
   skills: Skill[];
+  taskSize:string;
+  userName:string;
 }
 
 interface JobState {

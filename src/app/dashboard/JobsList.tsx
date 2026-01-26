@@ -83,10 +83,10 @@ const JobsList = ({ filter }: JobsListProps) => {
                             <h3 className="text-lg font-semibold text-gray-800">{job.title}</h3>
                             <span className="flex flex-col text-sm text-blue-600">
                                 {job.location || "Bangalore"}
-
-                                <button className="flex items-center gap-2 text-black">
-                                    💬 Chat
-                                </button>
+                                {/**/}
+                                {/* <button className="flex items-center gap-2 text-black"> */}
+                                {/*     💬 Chat */}
+                                {/* </button> */}
 
                             </span>
                         </div>
