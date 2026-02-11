@@ -191,13 +191,46 @@ export default function Dashboard() {
 
 
     return (
-        <div className="bg-[#FFFFFF] min-h-screen mt-4 space-y-4 ">
-            {/* First Row: Search Bar & Sidebar */}
-            <div className="flex items-center justify-between space-x-4">
-                <SearchBar />
-                <div className="relative z-50">
-                    <Sidebar name={user.username} type="/EmployerLogin" />
+        <div className="bg-[#FFFFFF] min-h-screen mt-4 space-y-4">
+            <div className="flex w-full items-center px-4">
+                {/* Left */}
+                <div className="flex-1">
+                    <SearchBar />
                 </div>
+
+                {/* Right */}
+                <div className="flex items-center gap-4 shrink-0">
+                    {/* Chat */}
+                    <button className="relative flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 hover:bg-gray-100 active:scale-95 transition">
+                        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                            1
+                        </span>
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.4-4 8-9 8a9.7 9.7 0 01-4-.8L3 20l1.2-3.6A7.6 7.6 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"
+                            />
+                        </svg>
+
+                        <span className="text-black">Chat</span>
+                    </button>
+
+                </div>
+
+                  {/* Sidebar */}
+                    <div className="relative z-50">
+                        <Sidebar name={user.username} type="/EmployerLogin" />
+                    </div>
+
             </div>
 
             {/* Grid of Dynamic Cards */}
@@ -255,14 +288,14 @@ export default function Dashboard() {
                         </button>
 
 
-                         
+
 
                         <h3 className="text-lg font-bold">{item.title}</h3>
                         <p className="text-sm">{item.description}</p>
                         {/* <p className="absolute bottom-0 pt-7 ">Amount offered : </p> */}
 
 
-                         <div className="mt-auto flex flex-wrap gap-2 justify-center">
+                        <div className="mt-auto flex flex-wrap gap-2 justify-center">
                             {item.skills?.map((skill) => (
                                 <span
                                     key={skill.objectId}
@@ -290,7 +323,7 @@ export default function Dashboard() {
             {/* Render Form when 'showForm' is true */}
             {showForm && <JobPostForm mode={formMode} objectId={objectId} job={selectedJob} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
 
-        </div>
+        </div >
     );
 }
 
