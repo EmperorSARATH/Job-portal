@@ -154,14 +154,14 @@ export default function LoginPage() {
             Login
           </button>
         </form>
-        <p className="text-sm text-center text-gray-600">
-          Don&#39;t have an account?{" "}
-          <Link href="/Registration/EmployeeReg" className="text-blue-600 hover:underline">
-            Sign up
-          </Link>
-
-
-        </p>
+        {/* <p className="text-sm text-center text-gray-600"> */}
+        {/*   Don&#39;t have an account?{" "} */}
+        {/*   <Link href="/Registration/EmployeeReg" className="text-blue-600 hover:underline"> */}
+        {/*     Sign up */}
+        {/*   </Link> */}
+        {/**/}
+        {/**/}
+        {/* </p> */}
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ const SearchBar = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search..."
-                className="w-[30vw] p-3 text-lg text-black border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-[30vw] p-3 text-lg text-black border border-black rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
     );

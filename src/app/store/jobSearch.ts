@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { JobDTO } from '../dashboard/JobsList'; // adjust path
 import { apiClient } from '@/lib/apiClient';
+import { config } from '@/lib/config';
 
 export interface JobsState {
   list: JobDTO[];
@@ -17,7 +18,7 @@ const initialState: JobsState = {
 export const fetchJobSearch = createAsyncThunk(
   'jobs/fetchJobs',
   async (filter: string | null) => {
-    let url = 'http://localhost:8080/list/jobs';
+    let url = `${config.apiBaseUrl}/list/jobs`;
     if (filter) {
       url += `?filter=${encodeURIComponent(filter)}`;
     }

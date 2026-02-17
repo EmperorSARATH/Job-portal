@@ -10,6 +10,8 @@ import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
 import { redirect } from "next/navigation";
 import "./page.css"//;
+import {config} from '@/lib/config';
+
 export interface SkillDTO {
     objectId: string;
     name: string;
@@ -73,7 +75,7 @@ export default function Dashboard() {
 
     const fetchData = async () => {
         try {
-            const response = await apiClient("http://localhost:8080/list/jobPostCard");
+            const response = await apiClient(`${config.apiBaseUrl}/list/jobPostCard`);
             const result: PaginatedResponse = await response.json();
             setData(result.content);
             console.log(result.content, "values")
@@ -191,7 +193,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="bg-[#FFFFFF] min-h-screen mt-4 space-y-4">
+        <div className="bg-[#FFFFFF] min-h-screen mt-1 space-y-4">
             <div className="flex w-full items-center px-4">
                 {/* Left */}
                 <div className="flex-1">
@@ -201,7 +203,7 @@ export default function Dashboard() {
                 {/* Right */}
                 <div className="flex items-center gap-4 shrink-0">
                     {/* Chat */}
-                    <button className="relative flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 hover:bg-gray-100 active:scale-95 transition">
+                    <button className=" fixed top-4 right-20 flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 hover:bg-gray-100 active:scale-95 transition">
                         <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                             1
                         </span>
