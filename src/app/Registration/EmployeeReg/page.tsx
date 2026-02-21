@@ -1,5 +1,9 @@
 "use client"
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+ import {config} from '@/lib/config';
+
 
 const Registration: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +22,8 @@ const Registration: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" })); // Clear errors on input change
   };
+
+   const router = useRouter();
 
   const validate = () => {
     const newErrors = {
@@ -55,7 +61,7 @@ const Registration: React.FC = () => {
       // Add API call or submission logic here
       try {
 
-        const response = await fetch("http://localhost:8080/api/users/reg/employee", {
+        const response = await fetch(`${config.apiBaseUrl}/api/users/reg/employee`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -69,6 +75,7 @@ const Registration: React.FC = () => {
 
           // Redirect the user or show a success message
           alert("Registration successful!");
+          router.push("/");
         } else {
           const errorData = await response.json();
           console.log(errorData);
