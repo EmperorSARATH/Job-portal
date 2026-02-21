@@ -75,7 +75,8 @@ const Registration: React.FC = () => {
 
           // Redirect the user or show a success message
           alert("Registration successful!");
-          router.push("/");
+          router.push("/#user-selection");
+
         } else {
           const errorData = await response.json();
           console.log(errorData);

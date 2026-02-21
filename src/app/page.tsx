@@ -49,7 +49,11 @@ export default function SmoothScrollPage() {
             </div>
 
 
-            <div className="flex items-center justify-center h-screen bg-gray-100">
+            <div
+                id="user-selection"
+                className="flex items-center justify-center h-screen bg-gray-100"
+            >
+
                 {/* New Section */}
                 <HomeUserSelection ref={nextSectionRef} />
             </div>
