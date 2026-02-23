@@ -120,7 +120,6 @@ export default function Dashboard() {
                 fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
                 setShowForm(false); // Hide form after submission
-                fetchData();
 
             } else if (mode === "edit") {
                 const skillsList = formData.skills.map(skill => ({
@@ -150,7 +149,6 @@ export default function Dashboard() {
                 fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
                 setShowForm(false); // Hide form after submission
-                fetchData();
             }
         } catch (error) {
             console.error("Error creating job post:", error);
@@ -165,7 +163,7 @@ export default function Dashboard() {
             });
 
             if (!response.ok) throw new Error("Failed to delete JobPostcard");
-            fetchData();
+            fetchData(page);
 
 
         } catch (error) {
