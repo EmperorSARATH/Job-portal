@@ -92,7 +92,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchData(page);
-    }, []);
+    }, [page]);
 
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
