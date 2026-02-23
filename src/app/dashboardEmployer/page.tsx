@@ -10,7 +10,7 @@ import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
 import { redirect } from "next/navigation";
 import "./page.css"//;
-import {config} from '@/lib/config';
+import { config } from '@/lib/config';
 
 export interface SkillDTO {
     objectId: string;
@@ -73,11 +73,16 @@ export default function Dashboard() {
 
     const [formMode, setFormMode] = useState("create");
 
-    const fetchData = async () => {
+
+    const [page, setPage] = useState<number>(0);
+    const [totalPages, setTotalPages] = useState<number>(0);
+
+    const fetchData = async (pageNumber: number) => {
         try {
-            const response = await apiClient(`${config.apiBaseUrl}/list/jobPostCard`);
+            const response = await apiClient(`${config.apiBaseUrl}/list/jobPostCard?page=${pageNumber}&size=5`);
             const result: PaginatedResponse = await response.json();
             setData(result.content);
+            setTotalPages(result.totalPages);
             console.log(result.content, "values")
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -86,8 +91,8 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        fetchData(page);
+    }, [page]);
 
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
@@ -228,10 +233,10 @@ export default function Dashboard() {
 
                 </div>
 
-                  {/* Sidebar */}
-                    <div className="relative z-50">
-                        <Sidebar name={user.username} type="/EmployerLogin" />
-                    </div>
+                {/* Sidebar */}
+                <div className="relative z-50">
+                    <Sidebar name={user.username} type="/EmployerLogin" />
+                </div>
 
             </div>
 
@@ -324,6 +329,53 @@ export default function Dashboard() {
             </div>
             {/* Render Form when 'showForm' is true */}
             {showForm && <JobPostForm mode={formMode} objectId={objectId} job={selectedJob} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
+
+            {/* Pagination */}
+            <div className="flex items-center justify-center mt-8 space-x-2">
+
+                {/* Previous Button */}
+                <button
+                    disabled={page === 0}
+                    onClick={() => setPage((prev) => prev - 1)}
+                    className={`px-4 py-2 rounded-lg border transition
+            ${page === 0
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-white hover:bg-gray-100 text-gray-700"
+                        }`}
+                >
+                    Prev
+                </button>
+
+                {/* Page Numbers */}
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setPage(index)}
+                        className={`px-4 py-2 rounded-lg border transition
+              ${index === page
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                                : "bg-white hover:bg-blue-50 text-gray-700"
+                            }`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+
+                {/* Next Button */}
+                <button
+                    disabled={page + 1 >= totalPages}
+                    onClick={() => setPage((prev) => prev + 1)}
+                    className={`px-4 py-2 rounded-lg border transition
+            ${page + 1 >= totalPages
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-white hover:bg-gray-100 text-gray-700"
+                        }`}
+                >
+                    Next
+                </button>
+
+            </div>
+
 
         </div >
     );
