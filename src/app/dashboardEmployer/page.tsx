@@ -92,7 +92,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchData(page);
-    }, [page]);
+    }, []);
 
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
@@ -117,6 +117,7 @@ export default function Dashboard() {
                 if (!response.ok) throw new Error("Failed to create job post card");
 
                 const newData = await response.json();
+                fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
                 setShowForm(false); // Hide form after submission
                 fetchData();
@@ -146,6 +147,7 @@ export default function Dashboard() {
                 if (!response.ok) throw new Error("Failed to create job post card");
 
                 const newData = await response.json();
+                fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
                 setShowForm(false); // Hide form after submission
                 fetchData();
