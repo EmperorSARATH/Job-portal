@@ -54,7 +54,6 @@ export default function Dashboard() {
                     <FilterDropdown onFilterChange={setSelectedFilter} />
                 </div>
 
-                // chat icon
                 <button className="relative flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-black hover:bg-gray-100 active:scale-95 transition">
                     {/* Notification badge */}
                     <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
