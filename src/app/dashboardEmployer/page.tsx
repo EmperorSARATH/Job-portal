@@ -171,6 +171,34 @@ export default function Dashboard() {
         }
     };
 
+    const purchase = async () => {
+    try {
+        const response = await apiClient(
+            `${config.apiBaseUrl}/api/payments/checkout`,{
+                  method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to get payment checkout url");
+        }
+
+        const checkoutUrl = await response.text();
+        // const data = await response.json();
+
+        console.log("checkout res = ",checkoutUrl);
+
+        // Open checkout in new tab
+        window.open(checkoutUrl, "_blank");
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
     // useEffect(() => {
     //     if (!user) {
     //         // Wait for 2 seconds and then redirect to the login page
@@ -201,8 +229,14 @@ export default function Dashboard() {
         <div className="bg-[#FFFFFF] min-h-screen mt-1 space-y-4">
             <div className="flex w-full items-center px-4">
                 {/* Left */}
-                <div className="flex-1">
+                <div className="flex justify-center gap-4">
                     <SearchBar />
+                    <button className="text-black rounded-md border border-gray-300 bg-green-300 px-4"
+                    onClick={()=>{
+                            purchase();
+                    }}>
+                        Purchase
+                    </button>
                 </div>
 
                 {/* Right */}
