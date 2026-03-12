@@ -31,3 +31,107 @@
 .fade-out {
   opacity: 0;
 }
+
+
+.arrow-container{
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.scroll-arrow{
+  font-size:28px;
+  color:black;
+  animation: arrowBounce 1.5s infinite ease-in-out,
+             arrowBlink 1.5s infinite;
+}
+
+/* up-down movement */
+
+@keyframes arrowBounce{
+  0%{
+    transform:translateY(0px) scale(1);
+  }
+  50%{
+    transform:translateY(10px) scale(1.1);
+  }
+  100%{
+    transform:translateY(0px) scale(1);
+  }
+}
+
+/* blinking */
+
+@keyframes arrowBlink{
+  0%{
+    opacity:1;
+  }
+  50%{
+    opacity:0.4;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+
+.orbit-section{
+  position:relative;
+  width:320px;
+  height:320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.orbit-title{
+  position:absolute;
+  font-size:28px;
+  font-weight:700;
+  text-align:center;
+  z-index:10;
+}
+
+.orbit-wrapper{
+  position:absolute;
+  width:550px;
+  height:550px;
+  animation:spin 25s linear infinite;
+}
+
+.orbit-wrapper:hover{
+  animation-play-state:paused;
+}
+
+.orbit-item{
+  position:absolute;
+  width:60px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.4s ease;
+}
+
+.orbit-item img{
+  width:60px;
+  height:60px;
+}
+
+/* positions */
+
+.icon1{ top:0; left:50%; transform:translateX(-50%); }
+.icon2{ right:0; top:50%; transform:translateY(-50%); }
+.icon3{ bottom:0; left:50%; transform:translateX(-50%); }
+.icon4{ left:0; top:50%; transform:translateY(-50%); }
+
+.orbit-wrapper:hover .orbit-item{
+  transform:scale(1.25);
+  filter:drop-shadow(0 0 8px rgba(0,0,0,0.3));
+}
+
+@keyframes spin{
+  from{ transform:rotate(0deg);}
+  to{ transform:rotate(360deg);}
+}

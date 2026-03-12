@@ -20,6 +20,16 @@ export default function SmoothScrollPage() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
+
+    const icons = [
+        { src: "/Images/Java.png", className: "icon1" },
+        { src: "/Images/javascript.png", className: "icon2" },
+        { src: "/Images/github.png", className: "icon3" },
+        { src: "/Images/C++.png", className: "icon4" },
+        { src: "/Images/go.png", className: "icon5" }
+    ];
+
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % phrases.length);
@@ -29,25 +39,52 @@ export default function SmoothScrollPage() {
 
     return (
         <>
-            <div className=" relative flex items-center justify-center flex-col h-screen bg-cover bg-center  ease-in-out " style={{
-                backgroundImage: `url(/Images/pic${currentIndex}.jpg)`,
-            }}>
-                <div className="absolute inset-0 bg-black/60"></div>
-                <div className="current-page-content">
+            <div
+                className="relative flex flex-col items-center justify-center h-screen bg-cover bg-center"
+            // style={{ backgroundImage: `url(/Images/pic${currentIndex}.jpg)` }}
+            >
+                <div className="absolute inset-0 bg-white"></div>
 
-                    <h1
-                        className={`"text-center text-5xl custom-h1 relative z-10" custom-h1 ${fade ? "fade-in" : "fade-out"}`}
-                        style={{ fontFamily: "'Lobster', cursive" }}
+                {/* TOP SECTION */}
+                <div className="relative z-10 flex flex-col items-center mt-10">
+                    {/**/}
+                    {/* <h2 className="text-4xl text-white font-bold mb-8"> */}
+                    {/*     Find Your Dream Job */}
+                    {/* </h2> */}
 
-                    >
-                        {phrases[currentIndex]}
-                    </h1>
-                    <div className="arrow-container" onClick={handleArrowClick}>
-                        <span className="arrow text-2xl">{"▼"}</span>
+                    <div className="orbit-section">
+
+                        {/* Center Text */}
+                        <h2 className="orbit-title text-black">
+                            Find Your Dream Tech Job
+                        </h2>
+
+                        {/* Orbit Container */}
+                        <div className="orbit-wrapper">
+
+                            {icons.map((icon, index) => (
+                                <div key={index} className={`orbit-item ${icon.className}`}>
+                                    <img src={icon.src} alt="tech" />
+                                </div>
+                            ))}
+
+                        </div>
+
                     </div>
                 </div>
-            </div>
 
+                {/* MAIN PHRASE */}
+                <div className="relative z-10 text-center mt-10">
+
+
+                    {/* DOWN ARROW */}
+                    <div className="arrow-container mt-2" onClick={handleArrowClick}>
+                        <span className="scroll-arrow">▼</span>
+                    </div>
+
+                </div>
+
+            </div>
 
             <div
                 id="user-selection"
