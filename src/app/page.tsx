@@ -26,7 +26,7 @@ export default function SmoothScrollPage() {
         { src: "/Images/javascript.png", className: "icon2" },
         { src: "/Images/github.png", className: "icon3" },
         { src: "/Images/C++.png", className: "icon4" },
-        { src: "/Images/go.png", className: "icon5" }
+ /*       { src: "/Images/go.png", className: "icon5" } */
     ];
 
 

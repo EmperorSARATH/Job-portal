@@ -5,6 +5,9 @@ import { RootState } from "../store/store";
 import { useState } from "react";
 import DirectChat from './DirectChat';
 
+import './JobDetails.css';
+import { apiClient } from "@/lib/apiClient";
+
 export default function JobDetails() {
     const selectedJob = useSelector((state: RootState) => state.job.selectedJob);
 
@@ -15,6 +18,34 @@ export default function JobDetails() {
     }
 
 
+  const applyJob = async () => {
+
+    try {
+
+        const jobId = selectedJob.objectId;
+
+            const response = await apiClient(`http://localhost:8080/api/jobs/${jobId}/apply`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to apply for job");
+        }
+
+        const result = await response.text();
+
+        console.log("Server response:", result);
+
+        alert("Application submitted successfully!");
+
+    } catch (error) {
+        console.error("Error applying for job:", error);
+        alert("Something went wrong while applying.");
+    }
+};
 
 
 
@@ -72,6 +103,11 @@ export default function JobDetails() {
                 <p className="mt-4 text-gray-600">
                     {selectedJob?.description}
                 </p>
+
+                <button 
+                onClick={applyJob}
+                className="apply-btn">Apply
+                </button>
             </div>
         </div>
     );
