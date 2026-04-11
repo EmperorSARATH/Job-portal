@@ -22,10 +22,10 @@ export default function SmoothScrollPage() {
 
 
     const icons = [
-        { src: "/Images/Java.png", className: "icon1" },
-        { src: "/Images/javascript.png", className: "icon2" },
-        { src: "/Images/github.png", className: "icon3" },
-        { src: "/Images/C++.png", className: "icon4" },
+        { src: "/Images/java2.png", className: "icon1" },
+        { src: "/Images/js2.png", className: "icon2" },
+        { src: "/Images/github2.png", className: "icon3" },
+        { src: "/Images/c++2.png", className: "icon4" },
  /*       { src: "/Images/go.png", className: "icon5" } */
     ];
 
