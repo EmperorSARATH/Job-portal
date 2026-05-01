@@ -26,7 +26,7 @@ export default function SmoothScrollPage() {
         { src: "/Images/js2.png", className: "icon2" },
         { src: "/Images/github2.png", className: "icon3" },
         { src: "/Images/c++2.png", className: "icon4" },
- /*       { src: "/Images/go.png", className: "icon5" } */
+        /*       { src: "/Images/go.png", className: "icon5" } */
     ];
 
 
@@ -52,35 +52,54 @@ export default function SmoothScrollPage() {
                     {/*     Find Your Dream Job */}
                     {/* </h2> */}
 
-                    <div className="orbit-section">
-
-                        {/* Center Text */}
-                        <h2 className="orbit-title text-black">
-                            Find Your Dream Tech Job
-                        </h2>
-
-                        {/* Orbit Container */}
-                        <div className="orbit-wrapper">
-
-                            {icons.map((icon, index) => (
-                                <div key={index} className={`orbit-item ${icon.className}`}>
-                                    <img src={icon.src} alt="tech" />
-                                </div>
-                            ))}
-
+                    <div className="orbit-section ">
+                        <div className="w-full">
+                            {/* Center Text */}
+                            <h2 className="orbit-title text-black w-full whitespace-nowrap">
+                                WELCOME TO JOB PORTAL
+                            </h2>
                         </div>
 
+
+
+                        {/* Orbit Container */}
+                        {/* <div className="orbit-wrapper"> */}
+                        {/**/}
+                        {/*     {icons.map((icon, index) => ( */}
+                        {/*         <div key={index} className={`orbit-item ${icon.className}`}> */}
+                        {/*             <img src={icon.src} alt="tech" /> */}
+                        {/*         </div> */}
+                        {/*     ))} */}
+                        {/**/}
+                        {/* </div> */}
+
+                    </div>
+
+                    <div className="border-4 border-black rounded-xl flex flex-row gap-3  ">
+
+                        <div className="flex flex-row  gap-8 z-10">
+                            <select className="border-2 border-black rounded-lg p-2 text-black">
+                                <option>Job</option>
+                                <option>Frontend Developer</option>
+                                <option>Backend Developer</option>
+                                <option>Full Stack Developer</option>
+                            </select>
+
+                            <select className="border-2 border-black rounded-lg p-2 text-black">
+                                <option>Location</option>
+                                <option>Kerala</option>
+                                <option>Trivandrum</option>
+                                <option>Bangalore</option>
+                            </select>
+
+                            <button className="text-black bg-green-200 rounded-lg p-2 border-2 border-green-300">Search</button>
+                        </div>
                     </div>
                 </div>
 
                 {/* MAIN PHRASE */}
                 <div className="relative z-10 text-center mt-10">
 
-
-                    {/* DOWN ARROW */}
-                    <div className="arrow-container mt-2" onClick={handleArrowClick}>
-                        <span className="scroll-arrow">▼</span>
-                    </div>
 
                 </div>
 
@@ -90,6 +109,12 @@ export default function SmoothScrollPage() {
                 id="user-selection"
                 className="flex items-center justify-center h-screen bg-gray-100"
             >
+                {/* DOWN ARROW */}
+                <div className="arrow-container mt-2" onClick={handleArrowClick}>
+                    <span className="scroll-arrow">▼</span>
+                </div>
+
+
 
                 {/* New Section */}
                 <HomeUserSelection ref={nextSectionRef} />

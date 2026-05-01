@@ -40,58 +40,66 @@ export default function Dashboard() {
     }
 
     return (
-        // <div className="mt-4">
-        //   <SearchBar/>
-        //   <Sidebar name = {user.username}/>
-        // </div>
+       
+        <div className="min-h-screen bg-gray-50 p-4">
 
-        <div className="mt-4 min-h-screen space-y-4 bg-[#F9F9F9]">
-            {/* First Row: Search Bar & Sidebar */}
-            <div className="flex items-center justify-between w-full">
-                {/* Left group: Search + Filter */}
-                <div className="ml-4 mb-10 flex items-center space-x-4">
-                    <SearchBar />
-                    <FilterDropdown onFilterChange={setSelectedFilter} />
+            {/* HEADER */}
+            <div className="sticky top-0 z-10 bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 mb-4">
+                <div className="flex items-center justify-between">
+
+                    {/* Left: Search + Filter */}
+                    <div className="flex items-center gap-4">
+                        <SearchBar />
+                        <FilterDropdown onFilterChange={setSelectedFilter} />
+                    </div>
+
+                    {/* Right: Chat + Profile */}
+                    <div className="flex items-center gap-4">
+
+                        {/* Chat Button */}
+                        <button className="relative flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-100 transition mr-4">
+
+                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                                1
+                            </span>
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 text-gray-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.4-4 8-9 8a9.7 9.7 0 01-4-.8L3 20l1.2-3.6A7.6 7.6 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"
+                                />
+                            </svg>
+
+                            <span className="font-medium">Chat</span>
+                        </button>
+
+                        {/* Profile */}
+                        <Sidebar name={user?.username} />
+                    </div>
                 </div>
-
-                <button className="relative flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-black hover:bg-gray-100 active:scale-95 transition">
-                    {/* Notification badge */}
-                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                        1
-                    </span>
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.4-4 8-9 8a9.7 9.7 0 01-4-.8L3 20l1.2-3.6A7.6 7.6 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"
-                        />
-                    </svg>
-
-                    <span>Chat</span>
-                </button>        
-
-                {/* Right: Sidebar */}
-                <Sidebar name={user?.username} />
             </div>
 
-            {/* Second Row: Two Columns with Vertical Line */}
+            {/* MAIN CONTENT */}
             <div className="grid grid-cols-2 gap-4">
-                <div className="ml-8 pr-4  border-r-2 border-red-500">
-                    {/* Component left*/}
+
+                {/* LEFT PANEL */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                     <JobsList filter={selectedFilter} />
                 </div>
-                <div className="pl-4">
-                    {/* Component right*/}
+
+                {/* RIGHT PANEL */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                     <JobDetails />
                 </div>
+
             </div>
         </div>
     );

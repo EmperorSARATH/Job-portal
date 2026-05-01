@@ -17,6 +17,13 @@ const HomeUserSelection = forwardRef<HTMLDivElement>((_, ref) => {
                 className="flex flex-col md:flex-row items-center justify-center flex h-screen bg-gray-100 "
             >
                 <div className='md:mr-5 border border-gray-300 shadow-lg rounded-lg p-6 bg-white'>
+                    <img
+                        src="/Images/employee.jpg"
+                        className="w-64 h-64 object-cover"
+
+                    >
+
+                    </img>
                     <h1
                         className="text-center text-5xl custom-h1 text-black "
                         style={{ fontFamily: "'Lobster', cursive" }}
@@ -37,6 +44,13 @@ const HomeUserSelection = forwardRef<HTMLDivElement>((_, ref) => {
                 </div>
 
                 <div className='md:mr-5 mt-5 sm:mt-0 border border-gray-300 shadow-lg rounded-lg p-6 bg-white'>
+
+                    <img
+                        src="/Images/employer.jpg"
+                        className="w-64 h-64 object-cover"
+                    >
+
+                    </img>
 
                     <h1
                         className="text-center text-5xl custom-h1 text-black  "

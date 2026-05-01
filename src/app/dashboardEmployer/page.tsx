@@ -22,7 +22,8 @@ interface CardData {
     title: string;
     description: string;
     skills: SkillDTO[];
-    taskSize: string
+    taskSize: string;
+    applications: number;
 }
 
 
@@ -94,6 +95,11 @@ export default function Dashboard() {
         fetchData(page);
     }, [page]);
 
+
+    const cardDetailClick = async() =>{
+
+        console.log("clicked !!!!!!!");
+    }
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
         try {
@@ -277,6 +283,9 @@ export default function Dashboard() {
             {/* Grid of Dynamic Cards */}
             <div className=" outer-container rounded-lg p-4 m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {data.map((item) => (
+                    <button onClick={()=>
+                        cardDetailClick()        
+                    }>
                     <div
                         key={item.objectId}
                         className="relative bg-blue-500 text-white flex flex-col items-center justify-center rounded-lg shadow-lg p-4 min-h-[260px]"
@@ -347,7 +356,12 @@ export default function Dashboard() {
                             ))}
                         </div>
 
+                        <div>
+                         {item.applications} 
+                        </div>
+
                     </div>
+                    </button>
                 ))}
                 {/* Plus Button appearing after the last card */}
                 <button
