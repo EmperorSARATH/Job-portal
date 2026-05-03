@@ -2,8 +2,13 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DirectChat from './DirectChat';
+
+import { JobDetail } from "@/types/job";
+
+import { config } from '@/lib/config';
+
 
 import './JobDetails.css';
 import { apiClient } from "@/lib/apiClient";
@@ -13,48 +18,67 @@ export default function JobDetails() {
 
     const [chatClicked, setChatClicked] = useState(false);
 
+    const [jobDetail, setJobDetail] = useState<JobDetail | null>(null);
+
+
+
+    useEffect(() => {
+        if (!selectedJob) return;
+
+        const fetchJobDetail = async () => {
+            const response = await apiClient(`${config.apiBaseUrl}/api/jobs/${selectedJob.objectId}`);
+            const result = await response.json();
+            setJobDetail(result);
+        };
+
+        fetchJobDetail();
+    }, [selectedJob]);
+
+
+
     if (!selectedJob) {
         return <p>No job selected.</p>;
     }
 
 
-  const applyJob = async () => {
 
-    try {
+    const applyJob = async () => {
 
-        const jobId = selectedJob.objectId;
+        try {
+            if (jobDetail?.applied) return;
 
-            const response = await apiClient(`http://localhost:8080/api/jobs/${jobId}/apply`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
+            const jobId = selectedJob.objectId;
+
+            const response = await apiClient(`${config.apiBaseUrl}/api/jobs/${jobId}/apply`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to apply for job");
             }
-        });
 
-        if (!response.ok) {
-            throw new Error("Failed to apply for job");
+            const result = await response.text();
+
+            console.log("Server response:", result);
+            setJobDetail(prev => prev ? { ...prev, applied: true } : prev);
+
+            alert("Application submitted successfully!");
+
+        } catch (error) {
+            console.error("Error applying for job:", error);
+            alert("Something went wrong while applying.");
         }
-
-        const result = await response.text();
-
-        console.log("Server response:", result);
-
-        alert("Application submitted successfully!");
-
-    } catch (error) {
-        console.error("Error applying for job:", error);
-        alert("Something went wrong while applying.");
-    }
-};
-
-
+    };
 
 
 
     return (
         <div className="p-4 rounded-xl bg-white shadow-md w-full">
             <div className="flex justify-between">
-                <h2 className="text-xl font-bold mb-4 text-gray-800"> {selectedJob.title}</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-800"> {jobDetail?.title}</h2>
                 <button onClick={() => setChatClicked(prev => !prev)}
                     className="flex-row items-center gap-2 text-black">
                     💬 Chat
@@ -104,9 +128,18 @@ export default function JobDetails() {
                     {selectedJob?.description}
                 </p>
 
-                <button 
-                onClick={applyJob}
-                className="apply-btn">Apply
+                {/* {jobDetail?.applied} */}
+                {/* <button */}
+                {/*     onClick={applyJob} */}
+                {/*     className="apply-btn">Apply */}
+                {/* </button> */}
+                <button
+                    onClick={applyJob}
+                    disabled={jobDetail?.applied}
+                    className={` ${jobDetail?.applied ? "apply-btn-inactive" : "apply-btn"
+                        }`}
+                >
+                    {jobDetail?.applied ? "Applied" : "Apply"}
                 </button>
             </div>
         </div>

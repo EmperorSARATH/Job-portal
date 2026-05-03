@@ -10,6 +10,19 @@
   transition:all 0.25s ease;
 }
 
+
+.apply-btn-inactive{
+ background-color: #3b82f6;  
+  color:white;
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+
+  transition:all 0.25s ease;
+}
+
 /* hover effect */
 
 .apply-btn:hover{
