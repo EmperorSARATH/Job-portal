@@ -1,4 +1,5 @@
 import React from "react";
+import LocationSelect from "./LocationSelect";
 
 interface JobStepTwoProps {
     formData: {
@@ -51,6 +52,8 @@ const JobStepTwo: React.FC<JobStepTwoProps> = ({
                 <option value="standalone">Standalone Problem</option>
             </select>
         </div>
+
+        <LocationSelect formData={formData} setFormData={setFormData} />
 
         {/* GitHub Link (only if repo) */}
         {formData.projectType === "repo" && (

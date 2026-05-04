@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from "react";
 import HomeUserSelection from "./components/homeUserSelection";
 import "./page.css";
+import { useRouter } from "next/navigation";
 
 export default function SmoothScrollPage() {
     const nextSectionRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,8 @@ export default function SmoothScrollPage() {
     const [fade, setFade] = useState(true);
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    
+    const router = useRouter();
 
 
     const icons = [
@@ -92,7 +95,7 @@ export default function SmoothScrollPage() {
                                 <option>Bangalore</option>
                             </select>
 
-                            <button className="text-black bg-green-200 rounded-lg p-2 border-2 border-green-300">Search</button>
+                            <button onClick={()=>router.push("/public-jobs")} className="text-black bg-green-200 rounded-lg p-2 border-2 border-green-300">Search</button>
                         </div>
                     </div>
                 </div>
