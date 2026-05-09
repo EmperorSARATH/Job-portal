@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedJob } from "../store/jobSlice";
 import { AppDispatch, RootState } from "../store/store";
@@ -15,7 +15,14 @@ const PublicJobList = ({ filter }: JobsListProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const jobs = useSelector((state: RootState) => state.jobSearch.list);
+    //   const jobs = useSelector((state: RootState) => state.jobSearch.list);
+
+    const { list, page, hasNext, loading } = useSelector(
+        (state: RootState) => state.jobSearch
+    );
+
+
+    const scrollRef = useRef<HTMLDivElement | null>(null);
 
     //      const jobs = [
     //   {
@@ -44,8 +51,46 @@ const PublicJobList = ({ filter }: JobsListProps) => {
 
 
     useEffect(() => {
-        dispatch(fetchJobSearch(filter || null));
+        // dispatch(fetchJobSearch(filter || null));
+        dispatch(fetchJobSearch({ keyword: "", page: 0, size: 5 }));
     }, [filter]);
+
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            if (!scrollRef.current) return;
+
+            const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+
+            const bottom =
+                scrollTop + clientHeight >= scrollHeight - 100;
+
+            if (bottom && hasNext && !loading) {
+
+                dispatch(fetchJobSearch({
+                    keyword: filter || "",
+                    page: page + 1,
+                    size: 10
+                }));
+
+            }
+        };
+
+        const currentRef = scrollRef.current;
+
+        if (currentRef) {
+            currentRef.addEventListener("scroll", handleScroll);
+        }
+
+        return () => {
+            if (currentRef) {
+                currentRef.removeEventListener("scroll", handleScroll);
+            }
+        };
+
+    }, [page, hasNext, loading, filter]);
 
     const handleCardClick = (job) => {
         dispatch(setSelectedJob(job));
@@ -63,8 +108,9 @@ const PublicJobList = ({ filter }: JobsListProps) => {
                 Find your next opportunity
             </h2>
 
-            <div className="space-y-4 max-h-[75vh] overflow-y-auto">
-                {jobs.map((job) => (
+            <div className="space-y-4 max-h-[75vh] overflow-y-auto"
+                ref={scrollRef}>
+                {list.map((job) => (
                     <div
                         key={job.objectId}
                         onClick={() => handleCardClick(job)}

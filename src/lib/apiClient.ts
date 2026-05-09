@@ -41,7 +41,7 @@ export const apiClient = async (
       ? localStorage.getItem("accessToken")
       : null;
 
-  const isPublicEndpoint = url.includes("/list/jobs");
+  const isPublicEndpoint = url.includes("/ESsearch");
 
   const headers: HeadersInit = {
     ...(options.headers || {}),

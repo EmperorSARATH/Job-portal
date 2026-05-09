@@ -52,7 +52,9 @@ const JobsList = ({ filter }: JobsListProps) => {
                 // const result = await response.json(); // parse JSON
                 // setJobs(result.content); // <-- set only the `content` array
                 //
-                dispatch(fetchJobSearch(filter || null));
+//                dispatch(fetchJobSearch(filter || null));
+                dispatch(fetchJobSearch({ keyword: "", page: 0, size: 10 }));
+
             } catch (error) {
                 console.error('Failed to fetch jobs:', error);
             }
