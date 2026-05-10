@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useEffect, useState } from "react";
 import SearchBar from "../dashboard/searchBar";
-import Sidebar from "../dashboard/sidebar";
+import Sidebar from "../dashboard/sidebar/sidebar";
 import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
 import { redirect } from "next/navigation";
