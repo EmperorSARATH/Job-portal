@@ -21,6 +21,7 @@ export interface JobDTO {
     city: string;
 
 }
+
 const SearchBar = () => {
     const [query, setQuery] = useState("");
 
@@ -28,21 +29,46 @@ const SearchBar = () => {
     const dispatch = useDispatch<AppDispatch>();
 
 
+    // useEffect(() => {
+    //     const fetchJobs = async () => {
+    //         console.log("Es Search !!");
+    //         let response = await apiClient(`${config.apiBaseUrl}/ESsearch?keyword='${query}'&page=0&size=10`);
+    //         const res = await response.json();
+    //         dispatch(setJobs(res));
+    //     }
+    //     if(query.length > 3){
+    //
+    //     fetchJobs();
+    //     }if(query.length === 0){
+    //         dispatch(fetchJobSearch(null));
+    //     }
+    //
+    // }, [query])
+
+
     useEffect(() => {
-        const fetchJobs = async () => {
-            console.log("Es Search !!");
-            let response = await apiClient(`${config.apiBaseUrl}/ESsearch?keyword='${query}'&page=0&size=10`);
-            const res = await response.json();
-            dispatch(setJobs(res));
-        }
-        if(query.length > 3){
 
-        fetchJobs();
-        }if(query.length === 0){
-            dispatch(fetchJobSearch(null));
-        }
+    if (query.length > 3) {
 
-    }, [query])
+        dispatch(fetchJobSearch({
+            keyword: query,
+            page: 0,
+            size: 10
+        }));
+
+    }
+
+    if (query.length === 0) {
+
+        dispatch(fetchJobSearch({
+            keyword: "",
+            page: 0,
+            size: 10
+        }));
+
+    }
+
+}, [query]);
 
 
     return (

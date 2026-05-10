@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { clearUser } from "../store/userSlice";
-import { AppDispatch } from "../store/store";
+import { clearUser } from "../../store/userSlice";
+import { AppDispatch } from "../../store/store";
 import Cookies from 'js-cookie';
 import Image from "next/image";
 interface SidebarProps {

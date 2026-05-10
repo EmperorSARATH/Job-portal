@@ -37,6 +37,7 @@ export const fetchJobSearch = createAsyncThunk(
     'jobs/fetchJobs',
     async ({ keyword, page = 0, size = 10 }: { keyword: string | null; page?: number; size?: number }) => {
 
+
         let url = `${config.apiBaseUrl}/ESsearch?page=${page}&size=${size}`;
 
         if (keyword && keyword.trim() !== "") {
@@ -81,8 +82,8 @@ const jobSearch = createSlice({
             })
 
             .addCase(fetchJobSearch.rejected, state => { state.loading = false; })
-            
-}
+
+    }
 });
 export const { setJobs } = jobSearch.actions;
 

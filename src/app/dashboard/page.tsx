@@ -3,19 +3,23 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import Sidebar from "./sidebar";
+import Sidebar from "./sidebar/sidebar";
 import SearchBar from "./searchBar";
 import JobsList from './JobsList';
 import { useEffect, useState } from "react";
 import JobDetails from "./JobDetails";
 import { useRouter } from "next/navigation";
 import FilterDropdown from "./FilterDropdown";
+import EmployeeDashboardSidebar from "./sidebar/EmployeeDashboardSidebar";
+import AppliedJobsPage from "./sidebar/appliedJobs/page";
 
 export default function Dashboard() {
     const user = useSelector((state: RootState) => state.user.user);
     const router = useRouter();
     const [checkingAuth, setCheckingAuth] = useState(true);
     const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+
+    const [activeSection, setActiveSection] = useState("jobs");
 
     useEffect(() => {
         // Simulate async check or wait for Redux rehydration
@@ -40,7 +44,7 @@ export default function Dashboard() {
     }
 
     return (
-       
+
         <div className="min-h-screen bg-gray-50 p-4">
 
             {/* HEADER */}
@@ -88,19 +92,38 @@ export default function Dashboard() {
             </div>
 
             {/* MAIN CONTENT */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-[260px_1fr_1fr] gap-4">
+
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 sticky top-24 flex flex-col justify-between h-full overflow-y-auto">
+                    < EmployeeDashboardSidebar
+                        activeSection={activeSection}
+                        setActiveSection={setActiveSection}
+                        user={user?.username}
+                    />
+                </div>
 
                 {/* LEFT PANEL */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-                    <JobsList filter={selectedFilter} />
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 h-[calc(100vh-120px)] overflow-hidden ">
+
+                    {activeSection === "appliedJobs" && (
+                        <AppliedJobsPage/>
+                    )}
+
+                    {activeSection === "jobs" && (
+
+                        <JobsList filter={selectedFilter} />
+                    )}
                 </div>
 
                 {/* RIGHT PANEL */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-                    <JobDetails />
-                </div>
 
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                    {activeSection === "jobs" && (
+                        <JobDetails />
+                    )}
+                    </div>
+
+                </div>
             </div>
-        </div>
-    );
+            );
 }
