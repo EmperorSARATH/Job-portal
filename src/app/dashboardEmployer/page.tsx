@@ -65,6 +65,8 @@ type Job = {
 
 
 export default function Dashboard() {
+
+
     const user = useSelector((state: RootState) => state.user.user);
     const [data, setData] = useState<CardData[]>([]);
     const [showForm, setShowForm] = useState(false);
@@ -77,6 +79,33 @@ export default function Dashboard() {
 
     const [page, setPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
+
+
+
+    const analytics = [
+        {
+            title: "Total Posts",
+            value: data.length,
+            emoji: "💼",
+        },
+        {
+            title: "Applications",
+            value: data.reduce((acc, job) => acc + job.applications, 0),
+            emoji: "📄",
+        },
+        {
+            title: "Current Page",
+            value: page + 1,
+            emoji: "📄",
+        },
+        {
+            title: "Total Pages",
+            value: totalPages,
+            emoji: "📊",
+        },
+    ];
+
+
 
     const fetchData = async (pageNumber: number) => {
         try {
@@ -96,7 +125,7 @@ export default function Dashboard() {
     }, [page]);
 
 
-    const cardDetailClick = async() =>{
+    const cardDetailClick = async () => {
 
         console.log("clicked !!!!!!!");
     }
@@ -178,32 +207,32 @@ export default function Dashboard() {
     };
 
     const purchase = async () => {
-    try {
-        const response = await apiClient(
-            `${config.apiBaseUrl}/api/payments/checkout`,{
-                  method: "POST",
+        try {
+            const response = await apiClient(
+                `${config.apiBaseUrl}/api/payments/checkout`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 }
             }
-        );
+            );
 
-        if (!response.ok) {
-            throw new Error("Failed to get payment checkout url");
+            if (!response.ok) {
+                throw new Error("Failed to get payment checkout url");
+            }
+
+            const checkoutUrl = await response.text();
+            // const data = await response.json();
+
+            console.log("checkout res = ", checkoutUrl);
+
+            // Open checkout in new tab
+            window.open(checkoutUrl, "_blank");
+
+        } catch (error) {
+            console.error(error);
         }
-
-        const checkoutUrl = await response.text();
-        // const data = await response.json();
-
-        console.log("checkout res = ",checkoutUrl);
-
-        // Open checkout in new tab
-        window.open(checkoutUrl, "_blank");
-
-    } catch (error) {
-        console.error(error);
-    }
-};
+    };
 
     // useEffect(() => {
     //     if (!user) {
@@ -232,200 +261,303 @@ export default function Dashboard() {
 
 
     return (
-        <div className="bg-[#FFFFFF] min-h-screen mt-1 space-y-4">
-            <div className="flex w-full items-center px-4">
-                {/* Left */}
-                <div className="flex justify-center gap-4">
-                    <SearchBar />
-                    <button className="text-black rounded-md border border-gray-300 bg-green-300 px-4"
-                    onClick={()=>{
-                            purchase();
-                    }}>
-                        Purchase
-                    </button>
-                </div>
+        <div className="min-h-screen bg-gray-100">
+            <div className="flex">
 
-                {/* Right */}
-                <div className="flex items-center gap-4 shrink-0">
-                    {/* Chat */}
-                    <button className=" fixed top-4 right-20 flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 hover:bg-gray-100 active:scale-95 transition">
-                        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                            1
-                        </span>
+                {/* LEFT SIDEBAR */}
+                <aside className="sticky top-0 h-screen w-72 border-r border-gray-200 bg-white p-5">
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.4-4 8-9 8a9.7 9.7 0 01-4-.8L3 20l1.2-3.6A7.6 7.6 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"
-                            />
-                        </svg>
+                    {/* PROFILE */}
+                    <div className="border-b border-gray-200 pb-5">
+                        <div className="flex items-center gap-3">
 
-                        <span className="text-black">Chat</span>
-                    </button>
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
+                                {user.username?.charAt(0)?.toUpperCase()}
+                            </div>
 
-                </div>
+                            <div>
+                                <h2 className="font-semibold text-gray-800">
+                                    {user.username}
+                                </h2>
 
-                {/* Sidebar */}
-                <div className="relative z-50">
-                    <Sidebar name={user.username} type="/EmployerLogin" />
-                </div>
+                                <p className="text-sm text-gray-500">
+                                    Employer Dashboard
+                                </p>
+                            </div>
 
-            </div>
+                        </div>
+                    </div>
 
-            {/* Grid of Dynamic Cards */}
-            <div className=" outer-container rounded-lg p-4 m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {data.map((item) => (
-                    <button onClick={()=>
-                        cardDetailClick()        
-                    }>
-                    <div
-                        key={item.objectId}
-                        className="relative bg-blue-500 text-white flex flex-col items-center justify-center rounded-lg shadow-lg p-4 min-h-[260px]"
-                    >
+                    {/* NAVIGATION */}
+                    <div className="mt-6 space-y-2">
 
-                        <button className="absolute top-2 left-2 rounded-full">
-                            <div
-                                className="w-4 h-4"
-                                style={{ backgroundColor: colors[item.taskSize] }}
-                            ></div>
+                        <button className="w-full rounded-xl bg-black px-4 py-3 text-left text-white transition hover:opacity-90">
+                            📊 Dashboard
                         </button>
 
-                        {/* Close Button */}
-                        <button
-                            //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
-                            className="absolute top-2 right-2 text-white  rounded-full  hover:bg-red-600"
-                            onClick={() => {
-                                isDeleted(item.objectId)
-                            }
-                            }
-
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                className="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6 7.5l.867 12.06A2.25 2.25 0 009.11 21h5.78a2.25 2.25 0 002.243-1.44L18 7.5M4.5 7.5h15M10 11v6m4-6v6m-7.5-9V5.25A2.25 2.25 0 019.75 3h4.5A2.25 2.25 0 0116.5 5.25V7.5" />
-                            </svg>
-
+                        <button className="w-full rounded-xl px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100">
+                            💼 Job Posts
                         </button>
 
-                        <button
-                            //  onClick={() => handleClose(item.id)} // Define handleClose function to remove item
-                            className="absolute bottom-2 right-2 text-white  rounded-full  hover:bg-blue-600"
-                            onClick={() => {
-                                setSelectedJob(item);
-                                setFormMode("edit");
-                                setShowForm(true);
-                                setObjectId(item.objectId);
-                            }}
-
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                className="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.862 4.487l1.688 1.687a1.5 1.5 0 010 2.122l-8.5 8.5-3.373.843.842-3.374 8.5-8.5a1.5 1.5 0 012.121 0z" />
-                            </svg>
-
+                        <button className="w-full rounded-xl px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100">
+                            📄 Applications
                         </button>
 
+                        <button className="w-full rounded-xl px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100">
+                            💳 Billing
+                        </button>
 
+                    </div>
 
+                    {/* BOTTOM */}
+                    <div className="mt-10 border-t border-gray-200 pt-4 text-sm text-gray-400">
+                        Manage your hiring platform
+                    </div>
 
-                        <h3 className="text-lg font-bold">{item.title}</h3>
-                        <p className="text-sm">{item.description}</p>
-                        {/* <p className="absolute bottom-0 pt-7 ">Amount offered : </p> */}
+                </aside>
 
+                {/* MAIN CONTENT */}
+                <main className="flex-1 p-6">
 
-                        <div className="mt-auto flex flex-wrap gap-2 justify-center">
-                            {item.skills?.map((skill) => (
-                                <span
-                                    key={skill.objectId}
-                                    className="px-3 py-1 text-xs bg-white/20 rounded-full"
-                                >
-                                    {skill.name}
-                                </span>
-                            ))}
+                    {/* TOP BAR */}
+                    <div className="mb-6 flex items-center justify-between">
+
+                        {/* LEFT */}
+                        <div className="flex items-center gap-4">
+                            <SearchBar />
+
+                            <button
+                                className="rounded-xl bg-green-500 px-4 py-2 font-medium text-white transition hover:bg-green-600"
+                                onClick={() => {
+                                    purchase();
+                                }}
+                            >
+                                Purchase
+                            </button>
                         </div>
 
-                        <div>
-                         {item.applications} 
+                        {/* RIGHT */}
+                        <div className="flex items-center gap-4">
+
+                            {/* CHAT */}
+                            <button className="relative rounded-xl border border-gray-300 bg-white px-4 py-2 transition hover:bg-gray-50">
+
+                                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                                    1
+                                </span>
+
+                                💬 Chat
+                            </button>
+
+                            <div className="relative z-50">
+                                <Sidebar
+                                    name={user.username}
+                                    type="/EmployerLogin"
+                                />
+                            </div>
+
                         </div>
 
                     </div>
-                    </button>
-                ))}
-                {/* Plus Button appearing after the last card */}
-                <button
-                    onClick={() => {
-                        setShowForm(true);
-                        setFormMode("create");
-                    }}
 
-                    className="top-button"
-                >
-                    +
-                </button>
+                    {/* ANALYTICS */}
+                    <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+
+                        {analytics.map((item) => (
+                            <div
+                                key={item.title}
+                                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+                            >
+                                <div className="flex items-center justify-between">
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            {item.title}
+                                        </p>
+
+                                        <h2 className="mt-2 text-3xl font-bold text-gray-900">
+                                            {item.value}
+                                        </h2>
+                                    </div>
+
+                                    <div className="rounded-xl bg-gray-100 p-3 text-2xl">
+                                        {item.emoji}
+                                    </div>
+
+                                </div>
+                            </div>
+                        ))}
+
+                    </div>
+
+                    {/* JOB POSTS SECTION */}
+                    <div className="rounded-2xl bg-white p-6 shadow-sm">
+
+                        {/* HEADER */}
+                        <div className="mb-5 flex items-center justify-between">
+
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">
+                                    Job Posts
+                                </h2>
+
+                                <p className="text-sm text-gray-500">
+                                    Manage all posted jobs
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setShowForm(true);
+                                    setFormMode("create");
+                                }}
+                                className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
+                            >
+                                + Create Job
+                            </button>
+
+                        </div>
+
+                        {/* JOB GRID */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                            {data.map((item) => (
+                                <div
+                                    key={item.objectId}
+                                    onClick={() => cardDetailClick()}
+                                >
+                                    <div className="relative flex min-h-[260px] flex-col items-center justify-center rounded-2xl bg-blue-500 p-4 text-white shadow-lg">
+
+                                        {/* STATUS DOT */}
+                                        <button className="absolute left-2 top-2 rounded-full">
+                                            <div
+                                                className="h-4 w-4 rounded-full"
+                                                style={{
+                                                    backgroundColor:
+                                                        colors[item.taskSize],
+                                                }}
+                                            />
+                                        </button>
+
+                                        {/* DELETE */}
+                                        <button
+                                            className="absolute right-2 top-2 rounded-full text-white hover:bg-red-600"
+                                            onClick={() => {
+                                                isDeleted(item.objectId);
+                                            }}
+                                        >
+                                            ✕
+                                        </button>
+
+                                        {/* EDIT */}
+                                        <button
+                                            className="absolute bottom-2 right-2 rounded-full text-white hover:bg-blue-600"
+                                            onClick={() => {
+                                                setSelectedJob(item);
+                                                setFormMode("edit");
+                                                setShowForm(true);
+                                                setObjectId(item.objectId);
+                                            }}
+                                        >
+                                            ✎
+                                        </button>
+
+                                        {/* TITLE */}
+                                        <h3 className="text-lg font-bold">
+                                            {item.title}
+                                        </h3>
+
+                                        {/* DESCRIPTION */}
+                                        <p className="mt-2 text-center text-sm">
+                                            {item.description}
+                                        </p>
+
+                                        {/* SKILLS */}
+                                        <div className="mt-auto flex flex-wrap justify-center gap-2 pt-5">
+                                            {item.skills?.map((skill) => (
+                                                <span
+                                                    key={skill.objectId}
+                                                    className="rounded-full bg-white/20 px-3 py-1 text-xs"
+                                                >
+                                                    {skill.name}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {/* APPLICATIONS */}
+                                        <div className="mt-4 text-sm font-medium">
+                                            {item.applications} Applications
+                                        </div>
+
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
+
+                    </div>
+
+                    {/* PAGINATION */}
+                    <div className="mt-8 flex items-center justify-center space-x-2">
+
+                        {/* PREV */}
+                        <button
+                            disabled={page === 0}
+                            onClick={() => setPage((prev) => prev - 1)}
+                            className={`rounded-lg border px-4 py-2 transition
+                        ${page === 0
+                                    ? "cursor-not-allowed bg-gray-200 text-gray-400"
+                                    : "bg-white text-gray-700 hover:bg-gray-100"
+                                }`}
+                        >
+                            Prev
+                        </button>
+
+                        {/* PAGE NUMBERS */}
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setPage(index)}
+                                className={`rounded-lg border px-4 py-2 transition
+                            ${index === page
+                                        ? "border-blue-600 bg-blue-600 text-white shadow-md"
+                                        : "bg-white text-gray-700 hover:bg-blue-50"
+                                    }`}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+
+                        {/* NEXT */}
+                        <button
+                            disabled={page + 1 >= totalPages}
+                            onClick={() => setPage((prev) => prev + 1)}
+                            className={`rounded-lg border px-4 py-2 transition
+                        ${page + 1 >= totalPages
+                                    ? "cursor-not-allowed bg-gray-200 text-gray-400"
+                                    : "bg-white text-gray-700 hover:bg-gray-100"
+                                }`}
+                        >
+                            Next
+                        </button>
+
+                    </div>
+
+                    {/* MODAL */}
+                    {showForm && (
+                        <JobPostForm
+                            mode={formMode}
+                            objectId={objectId}
+                            job={selectedJob}
+                            onClose={() => setShowForm(false)}
+                            onSubmit={handleFormSubmit}
+                        />
+                    )}
+
+                </main>
+
             </div>
-            {/* Render Form when 'showForm' is true */}
-            {showForm && <JobPostForm mode={formMode} objectId={objectId} job={selectedJob} onClose={() => setShowForm(false)} onSubmit={handleFormSubmit} />}
-
-            {/* Pagination */}
-            <div className="flex items-center justify-center mt-8 space-x-2">
-
-                {/* Previous Button */}
-                <button
-                    disabled={page === 0}
-                    onClick={() => setPage((prev) => prev - 1)}
-                    className={`px-4 py-2 rounded-lg border transition
-            ${page === 0
-                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                            : "bg-white hover:bg-gray-100 text-gray-700"
-                        }`}
-                >
-                    Prev
-                </button>
-
-                {/* Page Numbers */}
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setPage(index)}
-                        className={`px-4 py-2 rounded-lg border transition
-              ${index === page
-                                ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                                : "bg-white hover:bg-blue-50 text-gray-700"
-                            }`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-
-                {/* Next Button */}
-                <button
-                    disabled={page + 1 >= totalPages}
-                    onClick={() => setPage((prev) => prev + 1)}
-                    className={`px-4 py-2 rounded-lg border transition
-            ${page + 1 >= totalPages
-                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                            : "bg-white hover:bg-gray-100 text-gray-700"
-                        }`}
-                >
-                    Next
-                </button>
-
-            </div>
-
-
-        </div >
+        </div>
     );
 }
 
