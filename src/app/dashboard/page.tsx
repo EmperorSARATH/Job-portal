@@ -98,7 +98,7 @@ export default function Dashboard() {
                     < EmployeeDashboardSidebar
                         activeSection={activeSection}
                         setActiveSection={setActiveSection}
-                        user={user?.username}
+                        user={user}
                     />
                 </div>
 

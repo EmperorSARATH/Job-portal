@@ -1,8 +1,9 @@
 export interface User {
-  username: string;
-  email: string;
-  userType: string;
+    objectid: string;
+    username: string;
+    email: string;
+    userType: string;
 }
 export interface UserState {
-  user: User | null; // User can be `null` when not logged in
+    user: User | null; // User can be `null` when not logged in
 }

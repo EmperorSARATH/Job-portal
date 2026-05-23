@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+import { config } from '@/lib/config';
+
+import type { User } from '../../../store/type';
+import { apiClient } from "@/lib/apiClient";
+
 type ApplicationStatus =
   | "APPLIED"
   | "UNDER_REVIEW"
@@ -10,11 +15,11 @@ type ApplicationStatus =
   | "OFFER";
 
 interface AppliedJob {
-  id: string;
+  jobId: string;
   title: string;
-  company: string;
-  location: string;
-  appliedDate: string;
+ // company: string;
+//  location: string;
+  appliedOn: string;
   status: ApplicationStatus;
 }
 
@@ -45,7 +50,7 @@ const mockAppliedJobs: AppliedJob[] = [
   },
 ];
 
-export default function AppliedJobsPage() {
+export default function AppliedJobsPage({user}:{user:User}) {
   const [jobs, setJobs] = useState<AppliedJob[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,10 +64,19 @@ export default function AppliedJobsPage() {
         // const response = await apiClient.get("/applications");
         // setJobs(response.data);
 
-        setTimeout(() => {
-          setJobs(mockAppliedJobs);
-          setLoading(false);
-        }, 200);
+        const response = await apiClient(`${config.apiBaseUrl}/api/jobs/applied`);
+
+        const data = (await response.json()) as AppliedJob[];
+
+        console.log("applied jobs : ",data)
+        setJobs(data);
+        setLoading(false);
+
+        //
+        // setTimeout(() => {
+        //   setJobs(mockAppliedJobs);
+        //   setLoading(false);
+        // }, 200);
       } catch (error) {
         console.error("Failed to fetch applied jobs:", error);
         setLoading(false);
@@ -71,6 +85,11 @@ export default function AppliedJobsPage() {
 
     fetchAppliedJobs();
   }, []);
+
+  // This will log every single time the 'jobs' state actually changes
+useEffect(() => {
+  console.log("Jobs state has updated successfully:", jobs);
+}, [jobs]);
 
   const getStatusStyles = (status: ApplicationStatus) => {
     switch (status) {
@@ -155,7 +174,7 @@ export default function AppliedJobsPage() {
         <div className="space-y-4">
           {jobs.map((job) => (
             <div
-              key={job.id}
+              key={job.jobId}
               className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md"
             >
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -165,13 +184,13 @@ export default function AppliedJobsPage() {
                     {job.title}
                   </h2>
 
-                  <p className="mt-1 text-sm text-gray-600">
-                    {job.company} • {job.location}
-                  </p>
+                  {/* <p className="mt-1 text-sm text-gray-600"> */}
+                  {/*   {job.company} • {job.location} */}
+                  {/* </p> */}
 
                   <p className="mt-3 text-sm text-gray-500">
                     Applied on{" "}
-                    {new Date(job.appliedDate).toLocaleDateString()}
+                    {new Date(job.appliedOn).toLocaleDateString()}
                   </p>
                 </div>
 

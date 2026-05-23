@@ -4,6 +4,9 @@
 "use client"
 import React, { useState } from "react";
 
+import { config } from '@/lib/config';
+
+
 const Registration: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -58,7 +61,7 @@ const Registration: React.FC = () => {
       // Add API call or submission logic here
       try {
 
-        const response = await fetch("http://localhost:8080/api/users/reg/employee", {
+        const response = await fetch(`${config.apiBaseUrl}/api/users/reg/employee`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
