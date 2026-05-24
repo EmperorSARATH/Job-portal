@@ -8,7 +8,7 @@ import SearchBar from "../dashboard/searchBar";
 import Sidebar from "../dashboard/sidebar/sidebar";
 import JobPostForm from "./JobPostForm";
 import { apiClient } from "@/lib/apiClient";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import "./page.css"//;
 import { config } from '@/lib/config';
 
@@ -81,6 +81,8 @@ export default function Dashboard() {
     const [totalPages, setTotalPages] = useState<number>(0);
     const [totalElements, setTotalElements] = useState<number>(0);
 
+    const router = useRouter();
+
 
 
     const analytics = [
@@ -127,9 +129,13 @@ export default function Dashboard() {
     }, [page]);
 
 
-    const cardDetailClick = async () => {
+    const cardDetailClick = async (jobId : string) => {
 
         console.log("clicked !!!!!!!");
+
+
+        router.push(`/dashboardEmployer/jobs/${jobId}`);
+
     }
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
@@ -426,7 +432,7 @@ export default function Dashboard() {
                             {data.map((item) => (
                                 <div
                                     key={item.objectId}
-                                    onClick={() => cardDetailClick()}
+                                    onClick={() => cardDetailClick(item.objectId)}
                                 >
                                     <div className="relative flex min-h-[260px] flex-col items-center justify-center rounded-2xl bg-blue-500 p-4 text-white shadow-lg">
 
