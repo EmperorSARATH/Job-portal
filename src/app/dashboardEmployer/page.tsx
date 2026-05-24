@@ -450,7 +450,8 @@ export default function Dashboard() {
                                         {/* DELETE */}
                                         <button
                                             className="absolute right-2 top-2 rounded-full text-white hover:bg-red-600"
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 isDeleted(item.objectId);
                                             }}
                                         >
@@ -460,7 +461,8 @@ export default function Dashboard() {
                                         {/* EDIT */}
                                         <button
                                             className="absolute bottom-2 right-2 rounded-full text-white hover:bg-blue-600"
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 setSelectedJob(item);
                                                 setFormMode("edit");
                                                 setShowForm(true);
