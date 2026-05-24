@@ -79,23 +79,24 @@ export default function Dashboard() {
 
     const [page, setPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const [totalElements, setTotalElements] = useState<number>(0);
 
 
 
     const analytics = [
         {
             title: "Total Posts",
-            value: data.length,
+            value: totalElements,
             emoji: "💼",
-        },
-        {
-            title: "Applications",
-            value: data.reduce((acc, job) => acc + job.applications, 0),
-            emoji: "📄",
         },
         {
             title: "Current Page",
             value: page + 1,
+            emoji: "📄",
+        },
+        {
+            title: "Applications",
+            value: data.reduce((acc, job) => acc + job.applications, 0),
             emoji: "📄",
         },
         {
@@ -113,6 +114,7 @@ export default function Dashboard() {
             const result: PaginatedResponse = await response.json();
             setData(result.content);
             setTotalPages(result.totalPages);
+            setTotalElements(result.totalElements);
             console.log(result.content, "values")
         } catch (error) {
             console.error("Error fetching data:", error);
