@@ -69,7 +69,9 @@ const Registration: React.FC = () => {
                     body: JSON.stringify(formData),
                 });
 
-                if (response.message == "Success") {
+                console.log("res =  ", response)
+
+                if (response.status == 200) {
                     const data = await response.json();
                     console.log("Registration successful:", data);
 
