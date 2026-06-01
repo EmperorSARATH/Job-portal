@@ -88,12 +88,12 @@ export default function SmoothScrollPage() {
                                 <option>Full Stack Developer</option>
                             </select>
 
-                            <select className="border-2 border-black rounded-lg p-2 text-black">
-                                <option>Location</option>
-                                <option>Kerala</option>
-                                <option>Trivandrum</option>
-                                <option>Bangalore</option>
-                            </select>
+                            {/* <select className="border-2 border-black rounded-lg p-2 text-black"> */}
+                            {/*     <option>Location</option> */}
+                            {/*     <option>Kerala</option> */}
+                            {/*     <option>Trivandrum</option> */}
+                            {/*     <option>Bangalore</option> */}
+                            {/* </select> */}
 
                             <button onClick={()=>router.push("/public-jobs")} className="text-black bg-green-200 rounded-lg p-2 border-2 border-green-300">Search</button>
                         </div>

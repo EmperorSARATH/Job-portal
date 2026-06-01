@@ -53,7 +53,7 @@ const JobStepTwo: React.FC<JobStepTwoProps> = ({
             </select>
         </div>
 
-        <LocationSelect formData={formData} setFormData={setFormData} />
+       {/*  <LocationSelect formData={formData} setFormData={setFormData} /> */}
 
         {/* GitHub Link (only if repo) */}
         {formData.projectType === "repo" && (
