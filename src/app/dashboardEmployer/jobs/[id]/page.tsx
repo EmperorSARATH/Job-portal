@@ -1,6 +1,9 @@
 "use client";
 
+import { apiClient } from "@/lib/apiClient";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { config } from "@/lib/config";
 
 const applicants = [
     {
@@ -26,11 +29,61 @@ const applicants = [
     },
 ];
 
+
+interface JobDetails {
+    title: string;
+    postedBy: string;
+    description: string;
+    applied: boolean;
+    skills: string[];
+    numberOfApplicants: number;
+}
+
 export default function JobDetailPage() {
 
     const params = useParams();
 
     const jobId = params.id;
+
+
+    const [jobDetails, setJobDetails] = useState<JobDetails | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchJobDetails = async () => {
+            try {
+                const res = await apiClient(
+                    `${config.apiBaseUrl}/api/jobs/${jobId}`
+                );
+
+               const response : JobDetails = await res.json();  
+
+
+                setJobDetails(response);
+            } catch (err) {
+                setError("Failed to load job details");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJobDetails();
+    }, [jobId]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+    if (!jobDetails) {
+        return <div>No job found</div>;
+    }
+
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
@@ -60,7 +113,7 @@ export default function JobDetailPage() {
                         {/* TAGS */}
                         <div className="mt-5 flex flex-wrap gap-2">
 
-                            {["React", "Next.js", "TypeScript", "Tailwind"].map(
+                            {jobDetails.skills.map(
                                 (skill) => (
                                     <span
                                         key={skill}
@@ -85,7 +138,7 @@ export default function JobDetailPage() {
                             </p>
 
                             <h2 className="mt-2 text-3xl font-bold">
-                                24
+                                {jobDetails?.numberOfApplicants}
                             </h2>
 
                         </div>
