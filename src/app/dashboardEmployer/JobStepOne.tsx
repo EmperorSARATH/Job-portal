@@ -76,7 +76,7 @@ const JobStepOne = ({
 
         setFormData(prev => {
             // prevent duplicates
-            const exists = prev.skills.some(s => s.objectId === skill.id);
+            const exists = prev.skills.some(s => s.id === skill.id);
             if (exists) return prev;
 
             return {
@@ -94,7 +94,7 @@ const JobStepOne = ({
     const handleRemoveSkill = (skillId: string) => {
         setFormData(prev => ({
             ...prev,
-            skills: prev.skills.filter(skill => skill.objectId !== skillId)
+            skills: prev.skills.filter(skill => skill.id !== skillId)
         }));
     };
 
@@ -182,15 +182,15 @@ const JobStepOne = ({
 
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    {formData.skills.map(({ objectId, name }) => (
+                    {formData.skills.map(({ id, name }) => (
                         <span
-                            key={objectId}
+                            key={id}
                             className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center space-x-1"
                         >
                             <span>{name}</span>
                             <button
                                 type="button"
-                                onClick={() => handleRemoveSkill(objectId)}
+                                onClick={() => handleRemoveSkill(id)}
                                 className="text-red-500 font-bold ml-1"
                             >
                                 ×

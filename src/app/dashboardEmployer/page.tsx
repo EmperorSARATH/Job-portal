@@ -152,7 +152,7 @@ export default function Dashboard() {
                     skills: skillsList,
                     taskSize: formData.taskSize
                 };
-                const response = await apiClient("http://localhost:8080/create/jobPostCard", {
+                const response = await apiClient(`${config.apiBaseUrl}/create/jobPostCard`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(req),
@@ -181,7 +181,7 @@ export default function Dashboard() {
                     taskSize: formData.taskSize
                 };
 
-                const response = await apiClient("http://localhost:8080/edit/jobPostCard", {
+                const response = await apiClient(`${config.apiBaseUrl}/edit/jobPostCard`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(req),
