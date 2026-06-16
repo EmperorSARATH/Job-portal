@@ -200,7 +200,7 @@ export default function Dashboard() {
 
     const isDeleted = async (id: string) => {
         try {
-            const response = await apiClient(`http://localhost:8080/delete/jobPostCard/${id}`, {
+            const response = await apiClient(`${config.apiBaseUrl}/delete/jobPostCard/${id}`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             });
