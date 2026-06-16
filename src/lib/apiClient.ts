@@ -93,7 +93,7 @@ export const apiClient = async (
     "Content-Type": "application/json",
   };
 
-  if (token && isPublicEndpoint) {
+  if (token ) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 

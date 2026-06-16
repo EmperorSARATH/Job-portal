@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
 import { JobFormData } from "@/types/job";
+import { config } from "@/lib/config";
 import { useState, useEffect } from "react";
 
 interface JobStepOneProps {
@@ -10,7 +11,7 @@ interface JobStepOneProps {
 };
 
 interface Skill {
-    id: string;
+    objectId: string;
     name: string;
     category: string;
 }
@@ -38,7 +39,7 @@ const JobStepOne = ({
         const handler = setTimeout(async () => {
             try {
                 const res = await apiClient(
-                    `http://localhost:8080/search?query=${skillInput}`
+                    `${config.apiBaseUrl}/api/skills/get-skills`
                 );
                 const data = await res.json();
                 setSuggestions(data);
@@ -76,12 +77,12 @@ const JobStepOne = ({
 
         setFormData(prev => {
             // prevent duplicates
-            const exists = prev.skills.some(s => s.id === skill.id);
+            const exists = prev.skills.some(s => s.id === skill.objectId);
             if (exists) return prev;
 
             return {
                 ...prev,
-                skills: [...prev.skills, { objectId: skill.id, name: skill.name }]
+                skills: [...prev.skills, { objectId: skill.objectId, name: skill.name }]
             };
         });
 
