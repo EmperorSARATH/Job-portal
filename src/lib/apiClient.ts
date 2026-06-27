@@ -1,3 +1,4 @@
+import { config } from '@/lib/config';
 // src/lib/apiClient.ts
 //
 // export const apiClient = async (

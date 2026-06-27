@@ -160,6 +160,9 @@ export default function Dashboard() {
                 if (!response.ok) throw new Error("Failed to create job post card");
 
                 const newData = await response.json();
+
+                await purchase();
+
                 fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
                 setShowForm(false); // Hide form after submission
