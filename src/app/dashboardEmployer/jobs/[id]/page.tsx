@@ -30,6 +30,10 @@ const applicants = [
 ];
 
 
+interface userDetails {
+    email : string;
+}
+
 interface JobDetails {
     title: string;
     postedBy: string;
@@ -37,6 +41,7 @@ interface JobDetails {
     applied: boolean;
     skills: string[];
     numberOfApplicants: number;
+    userDetails : userDetails[];
 }
 
 export default function JobDetailPage() {
