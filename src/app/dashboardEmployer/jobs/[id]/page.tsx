@@ -32,6 +32,8 @@ const applicants = [
 
 interface userDetails {
     email : string;
+    id: string;
+    userName :string;
 }
 
 interface JobDetails {
@@ -54,6 +56,7 @@ export default function JobDetailPage() {
     const [jobDetails, setJobDetails] = useState<JobDetails | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -300,9 +303,9 @@ export default function JobDetailPage() {
                 {/* GRID */}
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
 
-                    {applicants.map((applicant) => (
+                    {jobDetails.userDetails.map((applicantDetail) => (
                         <div
-                            key={applicant.objectId}
+                            key={applicantDetail.id}
                             className="rounded-3xl border border-gray-200 bg-gray-50 p-5 transition hover:shadow-md"
                         >
 
@@ -310,16 +313,16 @@ export default function JobDetailPage() {
                             <div className="flex items-center gap-4">
 
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
-                                    {applicant.username.charAt(0)}
+                                    {applicantDetail.userName.charAt(0)}
                                 </div>
 
                                 <div>
                                     <h3 className="font-bold text-gray-900">
-                                        {applicant.username}
+                                        {applicantDetail.userName}
                                     </h3>
 
                                     <p className="text-sm text-gray-500">
-                                        {applicant.status}
+                                        {applicantDetail.status}
                                     </p>
                                 </div>
 
@@ -334,7 +337,7 @@ export default function JobDetailPage() {
                                     </p>
 
                                     <p className="mt-1 text-gray-700">
-                                        {applicant.email}
+                                        {applicantDetail.email}
                                     </p>
                                 </div>
 
@@ -344,7 +347,7 @@ export default function JobDetailPage() {
                                     </p>
 
                                     <p className="mt-1 text-gray-700">
-                                        {applicant.phone}
+                                        {applicantDetail.phone}
                                     </p>
                                 </div>
 
