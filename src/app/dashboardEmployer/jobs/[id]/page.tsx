@@ -5,29 +5,6 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { config } from "@/lib/config";
 
-const applicants = [
-    {
-        objectId: "1",
-        username: "Arjun",
-        email: "arjun@gmail.com",
-        phone: "+91 9876543210",
-        status: "Pending",
-    },
-    {
-        objectId: "2",
-        username: "Rahul",
-        email: "rahul@gmail.com",
-        phone: "+91 9123456780",
-        status: "Pending",
-    },
-    {
-        objectId: "3",
-        username: "Nikhil",
-        email: "nikhil@gmail.com",
-        phone: "+91 9988776655",
-        status: "Shortlisted",
-    },
-];
 
 
 interface userDetails {
@@ -109,13 +86,11 @@ export default function JobDetailPage() {
                         </p>
 
                         <h1 className="text-4xl font-bold">
-                            Senior Frontend Developer
+                        {jobDetails.title}
                         </h1>
 
                         <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
-                            Looking for an experienced React / Next.js developer
-                            who can build scalable frontend systems and work
-                            closely with backend teams.
+                        {jobDetails.description} 
                         </p>
 
                         {/* TAGS */}
