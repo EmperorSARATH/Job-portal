@@ -234,18 +234,6 @@ export default function JobDetailPage() {
 
                     </div>
 
-                    {/* JOB ID */}
-                    <div className="mt-6 rounded-2xl bg-gray-50 p-4">
-
-                        <p className="text-xs uppercase tracking-wide text-gray-400">
-                            Job ID
-                        </p>
-
-                        <p className="mt-2 break-all text-sm font-medium text-gray-700">
-                            {jobId}
-                        </p>
-
-                    </div>
 
                 </div>
 
