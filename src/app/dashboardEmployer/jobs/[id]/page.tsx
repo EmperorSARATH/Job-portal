@@ -8,9 +8,9 @@ import { config } from "@/lib/config";
 
 
 interface userDetails {
-    email : string;
+    email: string;
     id: string;
-    userName :string;
+    userName: string;
 }
 
 interface JobDetails {
@@ -20,7 +20,7 @@ interface JobDetails {
     applied: boolean;
     skills: string[];
     numberOfApplicants: number;
-    userDetails : userDetails[];
+    userDetails: userDetails[];
 }
 
 export default function JobDetailPage() {
@@ -34,6 +34,8 @@ export default function JobDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const [showEmailModal, setShowEmailModal] = useState(false);
+    const [selectedApplicant, setSelectedApplicant] = useState(null);
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -42,7 +44,7 @@ export default function JobDetailPage() {
                     `${config.apiBaseUrl}/api/jobs/${jobId}`
                 );
 
-               const response : JobDetails = await res.json();  
+                const response: JobDetails = await res.json();
 
 
                 setJobDetails(response);
@@ -86,11 +88,11 @@ export default function JobDetailPage() {
                         </p>
 
                         <h1 className="text-4xl font-bold">
-                        {jobDetails.title}
+                            {jobDetails.title}
                         </h1>
 
                         <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
-                        {jobDetails.description} 
+                            {jobDetails.description}
                         </p>
 
                         {/* TAGS */}
@@ -319,7 +321,12 @@ export default function JobDetailPage() {
                             {/* ACTIONS */}
                             <div className="mt-5 flex gap-3">
 
-                                <button className="flex-1 rounded-xl bg-green-500 px-4 py-3 font-medium text-white transition hover:bg-green-600">
+                                <button
+                                    onClick={() => {
+                                        setSelectedApplicant(applicantDetail);
+                                        setShowEmailModal(true);
+                                    }}
+                                    className="flex-1 rounded-xl bg-green-500 px-4 py-3 font-medium text-white transition hover:bg-green-600">
                                     Accept
                                 </button>
 
@@ -331,6 +338,70 @@ export default function JobDetailPage() {
 
                         </div>
                     ))}
+
+                    {showEmailModal && selectedApplicant && (
+                        <div>
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                                <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl text-black">
+                                    <h2 className="text-xl font-bold text-gray-900">
+                                        Send confirmation email
+                                    </h2>
+
+                                    <p className="mt-2 text-sm text-gray-500">
+                                        Send a confirmation email to {selectedApplicant.userName}.
+                                    </p>
+                                    <div className="mt-5">
+                                        <label className="text-sm font-medium text-gray-700">
+                                            To
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            value={selectedApplicant.email}
+                                            readOnly
+                                            className="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700"
+                                        />
+                                    </div>
+
+
+                                    <div className="mt-4">
+                                        <label className="text-sm font-medium text-gray-700">
+                                            Subject
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            defaultValue="Congratulations! You have been selected"
+                                            className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+
+
+                                    <div className="mt-4">
+                                        <label className="text-sm font-medium text-gray-700">
+                                            Message
+                                        </label>
+
+                                        <textarea
+                                            rows={6}
+                                            defaultValue={`Hi ${selectedApplicant.userName},We are pleased to inform you that you have been selected for the position.
+                                                Congratulations!
+                                                Best regards`}
+                                            className="mt-2 w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    )}
 
                 </div>
 
