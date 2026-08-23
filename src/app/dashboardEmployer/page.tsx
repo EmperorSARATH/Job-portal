@@ -76,6 +76,7 @@ export default function Dashboard() {
 
     const [formMode, setFormMode] = useState("create");
 
+    const [creditCount, setCreditCount] = useState<number>(0);
 
     const [page, setPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
@@ -123,13 +124,40 @@ export default function Dashboard() {
         }
     };
 
+    const fetchUserCreditCount = async () => {
+        if (!user?.objectid) {
+            return;
+        }
+
+        try {
+            const response = await apiClient(
+                `${config.apiBaseUrl}/api/users/credit/${user.objectid}`
+            );
+
+            const result = await response.json();
+            setCreditCount(result.count);
+        } catch (error) {
+            console.log("Error while fetching user credit count", error);
+        }
+    };
+
 
     useEffect(() => {
         fetchData(page);
     }, [page]);
 
 
-    const cardDetailClick = async (jobId : string) => {
+
+    useEffect(() => {
+        if (!user?.objectid) {
+            return;
+        }
+
+        fetchUserCreditCount();
+    }, [user?.objectid]);
+
+
+    const cardDetailClick = async (jobId: string) => {
 
         console.log("clicked !!!!!!!");
 
@@ -345,6 +373,16 @@ export default function Dashboard() {
                             >
                                 Purchase
                             </button>
+
+                            <div className="rounded-xl bg-blue-300 h-10 w-16 flex items-center justify-center ">
+                                <label className="text-black">Credit </label>
+
+
+                            </div>
+                            <label className="text-black">{creditCount}</label>
+
+
+
                         </div>
 
                         {/* RIGHT */}
