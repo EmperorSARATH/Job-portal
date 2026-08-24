@@ -155,7 +155,7 @@ export default function Dashboard() {
         }
 
         fetchUserCreditCount();
-    }, [user?.objectid]);
+    }, [user]);
 
 
     const cardDetailClick = async (jobId: string) => {
