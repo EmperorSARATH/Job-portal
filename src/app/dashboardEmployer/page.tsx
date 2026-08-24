@@ -190,7 +190,7 @@ export default function Dashboard() {
 
                 const newData = await response.json();
 
-                await purchase();
+                // await purchase();
 
                 fetchData(page);
                 setData((prev) => [...prev, newData]); // Update UI with the new card
