@@ -135,6 +135,7 @@ export default function Dashboard() {
             );
 
             const result = await response.json();
+            console.log("creditr count : ",result.count);
             setCreditCount(result.count);
         } catch (error) {
             console.log("Error while fetching user credit count", error);
