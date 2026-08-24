@@ -125,7 +125,7 @@ export default function Dashboard() {
     };
 
     const fetchUserCreditCount = async () => {
-        if (!user?.objectid) {
+        if (!user?.email) {
             return;
         }
 
@@ -150,7 +150,7 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-        if (!user?.objectid) {
+        if (!user?.email) {
             return;
         }
 
