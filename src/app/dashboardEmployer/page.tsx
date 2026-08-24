@@ -131,7 +131,7 @@ export default function Dashboard() {
 
         try {
             const response = await apiClient(
-                `${config.apiBaseUrl}/api/users/credit/${user.objectid}`
+                `${config.apiBaseUrl}/api/users/credit/${user.objectId}`
             );
 
             const result = await response.json();
