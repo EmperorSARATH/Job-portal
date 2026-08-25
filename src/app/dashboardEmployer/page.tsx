@@ -179,7 +179,8 @@ export default function Dashboard() {
                     title: formData.title,
                     objectId: objectId,
                     skills: skillsList,
-                    taskSize: formData.taskSize
+                    taskSize: formData.taskSize,
+                    userId:user?.objectId
                 };
                 const response = await apiClient(`${config.apiBaseUrl}/create/jobPostCard`, {
                     method: "POST",
