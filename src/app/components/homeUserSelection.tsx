@@ -14,7 +14,7 @@ const HomeUserSelection = forwardRef<HTMLDivElement>((_, ref) => {
         <div>
             <div
                 ref={ref}
-                className="flex flex-col md:flex-row items-center justify-center flex h-screen bg-gray-100 "
+                className="flex flex-col md:flex-row items-center justify-center flex h-screen "
             >
                 <div className='md:mr-5 border border-gray-300 shadow-lg rounded-lg p-6 bg-white'>
                     <img

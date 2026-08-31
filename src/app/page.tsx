@@ -480,6 +480,7 @@ export default function SmoothScrollPage() {
             justify-center
             px-6
             py-20
+            bg-gradient-to-br from-violet-100 via-white to-sky-100
         "
     >
 
