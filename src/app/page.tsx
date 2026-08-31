@@ -283,7 +283,7 @@ export default function SmoothScrollPage() {
             {/* RIGHT SIDE */}
             <div className="
                 relative
-                hidden md:flex
+                hidden min-[1055px]:flex
                 items-center
                 justify-center
                 h-[500px]
@@ -296,6 +296,7 @@ export default function SmoothScrollPage() {
                     h-[420px]
                     rounded-full
                     border border-indigo-200/70
+                    skew-y-[-10deg]
                 " />
 
                 <div className="
@@ -304,16 +305,8 @@ export default function SmoothScrollPage() {
                     h-[330px]
                     rounded-full
                     border border-purple-200/60
-                " />
-
-                <div className="
-                    absolute
-                    w-[240px]
-                    h-[240px]
-                    rounded-full
-                    border border-blue-200/50
-                " />
-
+                    skey-x-[10deg]                 
+                    " />
 
                 {/* CENTER */}
                 <div className="
