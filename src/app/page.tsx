@@ -56,25 +56,25 @@ export default function SmoothScrollPage() {
             </div>
 
             <div className="hidden md:flex items-center gap-10 text-gray-700">
-                <button className="hover:text-indigo-600 transition">
-                    Browse Jobs
-                </button>
-
-                <button className="hover:text-indigo-600 transition">
-                    Employers
-                </button>
-
-                <button className="hover:text-indigo-600 transition">
-                    About Us
-                </button>
-
-                <button className="hover:text-indigo-600 transition">
-                    Contact
-                </button>
+                {/* <button className="hover:text-indigo-600 transition"> */}
+                {/*     Browse Jobs */}
+                {/* </button> */}
+                {/**/}
+                {/* <button className="hover:text-indigo-600 transition"> */}
+                {/*     Employers */}
+                {/* </button> */}
+                {/**/}
+                {/* <button className="hover:text-indigo-600 transition"> */}
+                {/*     About Us */}
+                {/* </button> */}
+                {/**/}
+                {/* <button className="hover:text-indigo-600 transition"> */}
+                {/*     Contact */}
+                {/* </button> */}
             </div>
 
             <button
-                onClick={() => router.push("/login")}
+                onClick={() => handleArrowClick()}
                 className="
                     px-6 py-3
                     rounded-xl
