@@ -98,7 +98,7 @@ const Registration: React.FC = () => {
                 onSubmit={handleSubmit}
                 className="bg-white p-6 rounded shadow-md w-full max-w-md"
             >
-                <h1 className="text-2xl font-bold mb-4 text-black">Registration for Employee</h1>
+                <h1 className="text-2xl font-bold mb-4 text-black">Registration Form</h1>
 
                 {/* Email Field */}
                 <div className="mb-4">
