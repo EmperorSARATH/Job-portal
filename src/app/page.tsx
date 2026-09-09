@@ -3,6 +3,10 @@ import { useRef, useState, useEffect } from "react";
 import HomeUserSelection from "./components/homeUserSelection";
 import "./page.css";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { fetchJobSearch } from "../store/jobSearch";
+
 
 export default function SmoothScrollPage() {
     const nextSectionRef = useRef<HTMLDivElement>(null);
@@ -20,6 +24,9 @@ export default function SmoothScrollPage() {
     const [fade, setFade] = useState(true);
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    
+
+
     
     const router = useRouter();
 

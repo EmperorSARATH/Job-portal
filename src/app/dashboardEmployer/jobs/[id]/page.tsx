@@ -23,6 +23,13 @@ interface JobDetails {
     userDetails: userDetails[];
 }
 
+interface ApplicantsDetail{
+    jobId:string,
+    userId:string,
+    userName:string,
+    email:string
+}
+
 export default function JobDetailPage() {
 
     const params = useParams();
@@ -58,6 +65,13 @@ export default function JobDetailPage() {
 
         fetchJobDetails();
     }, [jobId]);
+
+    const viewApplicant = async () =>{
+        const res = await apiClient(`${config.apiBaseUrl}/api/jobs/${jobId}/applicants`);
+
+        const response : 
+
+    }
 
     if (loading) {
         return <div>Loading...</div>;
@@ -259,7 +273,9 @@ export default function JobDetailPage() {
 
                     </div>
 
-                    <button className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                    <button
+                    onClick={viewApplicant}
+                    className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
                         View All
                     </button>
 
