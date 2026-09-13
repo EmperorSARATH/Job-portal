@@ -23,11 +23,11 @@ interface JobDetails {
     userDetails: userDetails[];
 }
 
-interface ApplicantsDetail{
-    jobId:string,
-    userId:string,
-    userName:string,
-    email:string
+interface ApplicantsDetail {
+    jobId: string,
+    userId: string,
+    userName: string,
+    email: string
 }
 
 export default function JobDetailPage() {
@@ -43,6 +43,16 @@ export default function JobDetailPage() {
 
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [selectedApplicant, setSelectedApplicant] = useState(null);
+
+
+
+    const [applicants, setApplicants] = useState<ApplicantsDetail | []>([]);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const pageSize = 9; // matches xl:grid-cols-3, 3 full rows
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -66,12 +76,39 @@ export default function JobDetailPage() {
         fetchJobDetails();
     }, [jobId]);
 
-    const viewApplicant = async () =>{
-        const res = await apiClient(`${config.apiBaseUrl}/api/jobs/${jobId}/applicants`);
 
-        const response : 
+    const viewApplicant = async (pageNumber = 0) => {
 
-    }
+        setIsLoading(true);
+
+        try {
+            const res = await apiClient(
+                `${config.apiBaseUrl}/api/jobs/${jobId}/applicants?page=${pageNumber}&size=${pageSize}&sort=appliedOn,desc`
+            );
+
+            if (!res.ok) {
+                throw new Error(`Failed to fetch applicants: ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            setApplicants(data.content);
+            setTotalPages(data.totalPages);
+            setTotalElements(data.totalElements);
+            setPage(pageNumber);
+        } catch (err) {
+            console.error("Error fetching applicants:", err);
+            setApplicants([]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    const goToPage = (newPage : number) => {
+        if (newPage < 0 || newPage >= totalPages) return;
+        setPage(newPage);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -274,153 +311,163 @@ export default function JobDetailPage() {
                     </div>
 
                     <button
-                    onClick={viewApplicant}
-                    className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                        onClick={()=>viewApplicant(page)}
+                        className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
                         View All
                     </button>
 
                 </div>
 
-                {/* GRID */}
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                <div>
+                    {/* GRID */}
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 min-h-[200px]">
 
-                    {jobDetails.userDetails.map((applicantDetail) => (
-                        <div
-                            key={applicantDetail.id}
-                            className="rounded-3xl border border-gray-200 bg-gray-50 p-5 transition hover:shadow-md"
-                        >
+                        {isLoading ? (
+                            <p className="col-span-full text-center text-gray-400 py-10">
+                                Loading applicants...
+                            </p>
+                        ) : applicants.length === 0 ? (
+                            <p className="col-span-full text-center text-gray-400 py-10">
+                                No applicants yet.
+                            </p>
+                        ) : (
+                            applicants.map((applicantDetail) => (
+                                <div
+                                    key={applicantDetail.userId}
+                                    className="rounded-3xl border border-gray-200 bg-gray-50 p-5 transition hover:shadow-md"
+                                >
+                                    {/* TOP */}
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
+                                            {applicantDetail.username.charAt(0)}
+                                        </div>
 
-                            {/* TOP */}
-                            <div className="flex items-center gap-4">
+                                        <div>
+                                            <h3 className="font-bold text-gray-900">
+                                                {applicantDetail.username}
+                                            </h3>
+                                            <p className="text-sm text-gray-500">
+                                                {applicantDetail.status}
+                                            </p>
+                                        </div>
+                                    </div>
 
-                                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
-                                    {applicantDetail.userName.charAt(0)}
+                                    {/* DETAILS */}
+                                    <div className="mt-5 space-y-3 text-sm">
+                                        <div className="rounded-xl bg-white p-3">
+                                            <p className="text-xs uppercase text-gray-400">Email</p>
+                                            <p className="mt-1 text-gray-700">{applicantDetail.email}</p>
+                                        </div>
+
+                                        <div className="rounded-xl bg-white p-3">
+                                            <p className="text-xs uppercase text-gray-400">Contact</p>
+                                            <p className="mt-1 text-gray-700">{applicantDetail.phone}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* ACTIONS */}
+                                    <div className="mt-5 flex gap-3">
+                                        <button
+                                            onClick={() => {
+                                                setSelectedApplicant(applicantDetail);
+                                                setShowEmailModal(true);
+                                            }}
+                                            className="flex-1 rounded-xl bg-green-500 px-4 py-3 font-medium text-white transition hover:bg-green-600"
+                                        >
+                                            Accept
+                                        </button>
+
+                                        <button className="flex-1 rounded-xl bg-red-500 px-4 py-3 font-medium text-white transition hover:bg-red-600">
+                                            Reject
+                                        </button>
+                                    </div>
                                 </div>
+                            ))
+                        )}
+                    </div>
 
-                                <div>
-                                    <h3 className="font-bold text-gray-900">
-                                        {applicantDetail.userName}
-                                    </h3>
+                    {/* PAGINATION CONTROLS */}
+                    {totalPages > 1 && (
+                        <div className="mt-6 flex items-center justify-between">
+                            <p className="text-sm text-gray-500">
+                                Page {page + 1} of {totalPages} &middot; {totalElements} applicants
+                            </p>
 
-                                    <p className="text-sm text-gray-500">
-                                        {applicantDetail.status}
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            {/* DETAILS */}
-                            <div className="mt-5 space-y-3 text-sm">
-
-                                <div className="rounded-xl bg-white p-3">
-                                    <p className="text-xs uppercase text-gray-400">
-                                        Email
-                                    </p>
-
-                                    <p className="mt-1 text-gray-700">
-                                        {applicantDetail.email}
-                                    </p>
-                                </div>
-
-                                <div className="rounded-xl bg-white p-3">
-                                    <p className="text-xs uppercase text-gray-400">
-                                        Contact
-                                    </p>
-
-                                    <p className="mt-1 text-gray-700">
-                                        {applicantDetail.phone}
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            {/* ACTIONS */}
-                            <div className="mt-5 flex gap-3">
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => goToPage(page - 1)}
+                                    disabled={page === 0}
+                                    className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                                >
+                                    Previous
+                                </button>
 
                                 <button
-                                    onClick={() => {
-                                        setSelectedApplicant(applicantDetail);
-                                        setShowEmailModal(true);
-                                    }}
-                                    className="flex-1 rounded-xl bg-green-500 px-4 py-3 font-medium text-white transition hover:bg-green-600">
-                                    Accept
+                                    onClick={() => goToPage(page + 1)}
+                                    disabled={page >= totalPages - 1}
+                                    className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                                >
+                                    Next
                                 </button>
-
-                                <button className="flex-1 rounded-xl bg-red-500 px-4 py-3 font-medium text-white transition hover:bg-red-600">
-                                    Reject
-                                </button>
-
                             </div>
-
-                        </div>
-                    ))}
-
-                    {showEmailModal && selectedApplicant && (
-                        <div>
-                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                                <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl text-black">
-                                    <h2 className="text-xl font-bold text-gray-900">
-                                        Send confirmation email
-                                    </h2>
-
-                                    <p className="mt-2 text-sm text-gray-500">
-                                        Send a confirmation email to {selectedApplicant.userName}.
-                                    </p>
-                                    <div className="mt-5">
-                                        <label className="text-sm font-medium text-gray-700">
-                                            To
-                                        </label>
-
-                                        <input
-                                            type="email"
-                                            value={selectedApplicant.email}
-                                            readOnly
-                                            className="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700"
-                                        />
-                                    </div>
-
-
-                                    <div className="mt-4">
-                                        <label className="text-sm font-medium text-gray-700">
-                                            Subject
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            defaultValue="Congratulations! You have been selected"
-                                            className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
-                                        />
-                                    </div>
-
-
-                                    <div className="mt-4">
-                                        <label className="text-sm font-medium text-gray-700">
-                                            Message
-                                        </label>
-
-                                        <textarea
-                                            rows={6}
-                                            defaultValue={`Hi ${selectedApplicant.userName},We are pleased to inform you that you have been selected for the position.
-                                                Congratulations!
-                                                Best regards`}
-                                            className="mt-2 w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
-                                        />
-                                    </div>
-
-
-                                </div>
-
-
-
-
-
-                            </div>
-
                         </div>
                     )}
 
-                </div>
+                    {/* EMAIL MODAL */}
+                    {showEmailModal && selectedApplicant && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                            <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl text-black">
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    Send confirmation email
+                                </h2>
 
+                                <p className="mt-2 text-sm text-gray-500">
+                                    Send a confirmation email to {selectedApplicant.username}.
+                                </p>
+
+                                <div className="mt-5">
+                                    <label className="text-sm font-medium text-gray-700">To</label>
+                                    <input
+                                        type="email"
+                                        value={selectedApplicant.email}
+                                        readOnly
+                                        className="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700"
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+                                    <label className="text-sm font-medium text-gray-700">Subject</label>
+                                    <input
+                                        type="text"
+                                        defaultValue="Congratulations! You have been selected"
+                                        className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+                                    <label className="text-sm font-medium text-gray-700">Message</label>
+                                    <textarea
+                                        rows={6}
+                                        defaultValue={`Hi ${selectedApplicant.username},\n\nWe are pleased to inform you that you have been selected for the position.\n\nCongratulations!\n\nBest regards`}
+                                        className="mt-2 w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                                    />
+                                </div>
+
+                                <div className="mt-5 flex justify-end gap-3">
+                                    <button
+                                        onClick={() => setShowEmailModal(false)}
+                                        className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
         </div>
