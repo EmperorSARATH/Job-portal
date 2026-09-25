@@ -4,8 +4,7 @@ import { apiClient } from "@/lib/apiClient";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { config } from "@/lib/config";
-
-
+import { mailRequest } from "@/types/job";
 
 interface userDetails {
     email: string;
@@ -44,7 +43,8 @@ export default function JobDetailPage() {
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [selectedApplicant, setSelectedApplicant] = useState(null);
 
-
+    const [message, setMessage] = useState("");
+    const [subject, setSubject] = useState("");
 
     const [applicants, setApplicants] = useState<ApplicantsDetail | []>([]);
     const [page, setPage] = useState(0);
@@ -104,8 +104,37 @@ export default function JobDetailPage() {
         }
     };
 
+    const sendMail = async () => {
 
-    const goToPage = (newPage : number) => {
+        console.log("mail sending method !!");
+        const req: mailRequest = {
+            to: selectedApplicant?.email,
+            subject: subject,
+            message: message
+        };
+        const res = await apiClient(`${config.apiBaseUrl}/api/applicant/selection-mail`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(req)
+        })
+
+        if (!res.ok) {
+            throw new Error('Failed to send mail to applicant ');
+        }
+
+        const asyncRes = await res.json();
+        setShowEmailModal(false); 
+    }
+
+
+    const showEmailModalOnClick = async(applicant)=>{
+
+        setSubject("Congratulations! You have been selected");
+        setMessage(`Hi ${applicant?.username ?? "there"},\n\nWe are pleased to inform you that you have been selected for the position.\n\nCongratulations!\n\nBest regards`);
+    }
+
+
+    const goToPage = (newPage: number) => {
         if (newPage < 0 || newPage >= totalPages) return;
         setPage(newPage);
     };
@@ -311,7 +340,7 @@ export default function JobDetailPage() {
                     </div>
 
                     <button
-                        onClick={()=>viewApplicant(page)}
+                        onClick={() => viewApplicant(page)}
                         className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
                         View All
                     </button>
@@ -371,6 +400,7 @@ export default function JobDetailPage() {
                                             onClick={() => {
                                                 setSelectedApplicant(applicantDetail);
                                                 setShowEmailModal(true);
+                                                showEmailModalOnClick(applicantDetail);
                                             }}
                                             className="flex-1 rounded-xl bg-green-500 px-4 py-3 font-medium text-white transition hover:bg-green-600"
                                         >
@@ -439,7 +469,7 @@ export default function JobDetailPage() {
                                     <label className="text-sm font-medium text-gray-700">Subject</label>
                                     <input
                                         type="text"
-                                        defaultValue="Congratulations! You have been selected"
+                                        defaultValue={subject}
                                         className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
                                     />
                                 </div>
@@ -448,7 +478,7 @@ export default function JobDetailPage() {
                                     <label className="text-sm font-medium text-gray-700">Message</label>
                                     <textarea
                                         rows={6}
-                                        defaultValue={`Hi ${selectedApplicant.username},\n\nWe are pleased to inform you that you have been selected for the position.\n\nCongratulations!\n\nBest regards`}
+                                        defaultValue={message}
                                         className="mt-2 w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
                                     />
                                 </div>
@@ -460,7 +490,8 @@ export default function JobDetailPage() {
                                     >
                                         Cancel
                                     </button>
-                                    <button className="rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600">
+                                    <button className="rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+                                        onClick={() => sendMail()}>
                                         Send
                                     </button>
                                 </div>

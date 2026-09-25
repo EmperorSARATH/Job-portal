@@ -21,3 +21,11 @@ export interface JobDetail {
     salary?: number; // optional
     applied:boolean;
 }
+
+
+export interface mailRequest{
+    to:string;
+    subject:string;
+    message:string;
+
+}
