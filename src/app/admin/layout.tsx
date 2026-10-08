@@ -2,12 +2,13 @@
 "use client";
 
 import Link from "next/link";
+import { ReactNode } from "react";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface AdminLayoutProps {
+  children: ReactNode;
+}
+
+export default function AdminLayout({children}:AdminLayoutProps) {
   const navItems = [
     {
       name: "Dashboard",
