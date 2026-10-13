@@ -8,6 +8,7 @@ import { setUser } from "../store/userSlice";
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import {config} from '@/lib/config';
+import { authenticateUser } from "./actions";
 
 export default function LoginClient() {
 
@@ -52,30 +53,29 @@ export default function LoginClient() {
 
 
     try {
-      // Send the request to the server
-      const response = await fetch(`${config.apiBaseUrl}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success == true) {
+      // Send the request to the server
+      // const response = await fetch(`${config.apiBaseUrl}/api/users/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(payload),
+      // });
+      //
+
+      const result = await authenticateUser({ email, password, userType });
+
+      if (result.success && result.data.success == true) {
+        const data = result.data;
           alert("login success")
           dispatch(setUser(data.object.user)); // Set user in Redux store
           Cookies.set('JWT', data.object.accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
           localStorage.setItem('accessToken', data.object.accessToken);
           router.push("/dashboard"); // Navigate to dashboard
-        } else {
-          alert("Login failed")
-        }
-
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Login failed. Please try again.");
+          alert("login failed!")
+        setError(result.message || "Login failed. Please try again.");
       }
     } catch (err) {
       setError("An error occurred. Please try again later.");
