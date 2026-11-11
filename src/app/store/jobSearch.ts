@@ -7,6 +7,9 @@ import { config } from '@/lib/config';
 export interface JobsState {
     list: JobDTO[];
     loading: boolean;
+    page :number;
+    hasNext:boolean;
+    error:string | null;
 }
 
 const initialState: JobsState = {

@@ -22,13 +22,15 @@ export interface JobDTO {
     location: string;
     company: string;
     city: string;
+    taskSize : string;
+    userName:string;
 
 }
 interface JobsListProps {
     filter: string | null;
 }
 const initialState = {
-    list: [],
+    list: [] as JobDTO[],
     page: 0,
     hasNext: true,
     loading: false
