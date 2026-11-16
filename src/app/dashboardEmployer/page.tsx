@@ -83,6 +83,7 @@ export default function Dashboard() {
     const [totalElements, setTotalElements] = useState<number>(0);
 
     const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 
 
@@ -135,7 +136,7 @@ export default function Dashboard() {
             );
 
             const result = await response.json();
-            console.log("creditr count : ",result.count);
+            console.log("creditr count : ", result.count);
             setCreditCount(result.count);
         } catch (error) {
             console.log("Error while fetching user credit count", error);
@@ -180,7 +181,7 @@ export default function Dashboard() {
                     objectId: objectId,
                     skills: skillsList,
                     taskSize: formData.taskSize,
-                    userId:user?.objectId
+                    userId: user?.objectId
                 };
                 const response = await apiClient(`${config.apiBaseUrl}/create/jobPostCard`, {
                     method: "POST",
@@ -195,8 +196,8 @@ export default function Dashboard() {
 
                 const newData = await response.json();
 
-                if(newData?.message === "User does not have enough credit count"){
-                    throw new Error("User does not have enough credit to create job");
+                if (newData?.message === "User does not have enough credit count") {
+                    setErrorMessage('You do not have enough credits to create a job.');
                 }
 
                 // await purchase();
@@ -450,6 +451,12 @@ export default function Dashboard() {
                     </div>
 
                     {/* JOB POSTS SECTION */}
+                    {/* Inline error message */}
+                    {errorMessage && (
+                        <div className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-700 border border-red-200">
+                            {errorMessage}
+                        </div>
+                    )}
                     <div className="rounded-2xl bg-white p-6 shadow-sm">
 
                         {/* HEADER */}
