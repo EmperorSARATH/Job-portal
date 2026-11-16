@@ -189,7 +189,15 @@ export default function Dashboard() {
                 });
                 if (!response.ok) throw new Error("Failed to create job post card");
 
+                console.log(response);
+
+
+
                 const newData = await response.json();
+
+                if(newData?.message === "User does not have enough credit count"){
+                    console.error("User does not have enough credit to create job");
+                }
 
                 // await purchase();
 
