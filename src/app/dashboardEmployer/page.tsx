@@ -169,6 +169,7 @@ export default function Dashboard() {
     }
 
     const handleFormSubmit = async (formData: FormData, mode: string, objectId?: string) => {
+        setErrorMessage(null);
         try {
             if (mode === "create") {
                 const skillsList = formData.skills.map(skill => ({
