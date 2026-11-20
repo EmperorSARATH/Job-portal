@@ -25,3 +25,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/emperorsarath/jobportal-frontend:latest
+          build-args: |
+            NEXT_PUBLIC_API_BASE_URL=
